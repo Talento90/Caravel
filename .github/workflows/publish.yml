@@ -4,17 +4,13 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet: [ '3.1.100' ]
-    name: DotNet Version ${{ matrix.dotnet }}
     steps:
       - uses: actions/checkout@v1
-      
-      - name: Setup dotnet
+
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.dotnet }}    
+          dotnet-version: 3.1.100    
       
       - name: Build
         run: dotnet build --configuration Release
@@ -27,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - name: Nuget Pack
         run: dotnet pack --output nupkgs -c Release -p:PackageReleaseNotes="${{ github.sha }}"
       
