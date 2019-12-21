@@ -6,15 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.100    
-      
+          dotnet-version: 3.1.100  
       - name: Build
         run: dotnet build --configuration Release
-
       - name: Unit Tests
         run: dotnet test
   deploy:
@@ -23,9 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
       - name: Nuget Pack
         run: dotnet pack --output nupkgs -c Release -p:PackageReleaseNotes="${{ github.sha }}"
-      
       - name: Nuget Publish
         run: dotnet nuget push "nupkgs\*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
