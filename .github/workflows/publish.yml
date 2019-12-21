@@ -20,7 +20,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Unit Tests
-        run: dotnet tes
+        run: dotnet test
   deploy:
     if: github.ref == 'refs/heads/master'
     needs: build
