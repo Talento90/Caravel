@@ -1,0 +1,9 @@
+using System;
+
+namespace Caravel.Exceptions
+{
+    public class PermissionException : CaravelException
+    {
+        public PermissionException(Error error, Exception? innerException = null) : base(error, innerException){}
+    }
+}

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>Library</OutputType>
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Caravel</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <PackageVersion>0.1.0</PackageVersion>
+        <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
+        <PackageTags>dotnet,sdk</PackageTags>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+
+</Project>
