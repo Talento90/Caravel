@@ -27,6 +27,10 @@ namespace Caravel.AspNetCore.Middleware
             {
                 context.TraceIdentifier = context.Request.Headers[CorrelationIdHeader];
             }
+            else
+            {
+                context.TraceIdentifier = Guid.NewGuid().ToString();
+            }
 
             context.Response.OnStarting(() =>
             {

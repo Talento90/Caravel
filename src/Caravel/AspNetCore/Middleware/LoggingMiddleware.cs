@@ -40,28 +40,27 @@ namespace Caravel.AspNetCore.Middleware
             var cid = _appContext.Context.CorrelationId;
             var uid = _appContext.Context.UserId;
 
-            using (_logger.BeginScope("{cid} {uid} {headers}", cid, uid))
+            using (_logger.BeginScope("{cid} {uid}", cid, uid))
             {
                 await LogRequest(request);
 
                 var originalBodyStream = context.Response.Body;
 
-                using (var responseBody = new MemoryStream())
-                {
-                    context.Response.Body = responseBody;
+                await using var responseBody = new MemoryStream();
+                
+                context.Response.Body = responseBody;
 
-                    var start = Stopwatch.StartNew();
+                var start = Stopwatch.StartNew();
 
-                    await _next(context);
+                await _next(context);
 
-                    start.Stop();
+                start.Stop();
 
-                    context.Response.Body.Seek(0, SeekOrigin.Begin);
-                    await LogResponse(context.Response, start.Elapsed);
-                    context.Response.Body.Seek(0, SeekOrigin.Begin);
+                context.Response.Body.Seek(0, SeekOrigin.Begin);
+                await LogResponse(context.Response, start.Elapsed);
+                context.Response.Body.Seek(0, SeekOrigin.Begin);
 
-                    await responseBody.CopyToAsync(originalBodyStream);
-                }
+                await responseBody.CopyToAsync(originalBodyStream);
             }
         }
 
