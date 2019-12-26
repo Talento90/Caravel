@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Caravel.Http
+namespace Caravel.AspNetCore.Http
 {
     public class AuthorizationProxyHttpClientHandler : DelegatingHandler
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caravel.AppContext;
-using Caravel.Http;
+using Caravel.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Middleware

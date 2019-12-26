@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
 using Caravel.Exceptions;
 using Caravel.Http;

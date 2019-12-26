@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net;
+using Caravel.AspNetCore.Http;
 using Caravel.Exceptions;
-using Caravel.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

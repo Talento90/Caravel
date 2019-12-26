@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Caravel.AppContext;
 using Microsoft.AspNetCore.Http;
 
-namespace Caravel.Http
+namespace Caravel.AspNetCore.Http
 {
     public class HttpClientHandler : DelegatingHandler
     {

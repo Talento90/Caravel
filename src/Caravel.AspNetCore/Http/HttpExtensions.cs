@@ -7,8 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using JsonSerializerOptions = Caravel.Http.JsonSerializerOptions;
 
-namespace Caravel.Http
+namespace Caravel.AspNetCore.Http
 {
     public static class HttpExtensions
     {

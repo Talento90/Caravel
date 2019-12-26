@@ -1,7 +1,8 @@
+using Caravel.AspNetCore.Http;
 using Caravel.Http;
 using Xunit;
 
-namespace Caravel.Tests.Http
+namespace Caravel.AspNetCore.Tests.Http
 {
     public class HttpExtensionsTests
     {

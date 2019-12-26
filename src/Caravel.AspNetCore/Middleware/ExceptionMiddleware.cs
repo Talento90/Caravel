@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Caravel.AspNetCore.Http;
 using Caravel.Exceptions;
 using Caravel.Http;
 using Microsoft.AspNetCore.Http;

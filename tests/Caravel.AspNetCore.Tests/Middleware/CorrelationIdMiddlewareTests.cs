@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Xunit;
 
-namespace Caravel.Tests.AspNetCore.Middleware
+namespace Caravel.AspNetCore.Tests.Middleware
 {
     public class CorrelationIdMiddlewareTests
     {

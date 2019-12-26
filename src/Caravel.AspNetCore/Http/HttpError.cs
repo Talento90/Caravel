@@ -4,7 +4,7 @@ using System.Net;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Caravel.Http
+namespace Caravel.AspNetCore.Http
 {
     public class HttpError : ProblemDetails
     {

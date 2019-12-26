@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caravel", "src\Caravel\Cara
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caravel.Tests", "tests\Caravel.Tests\Caravel.Tests.csproj", "{A89DB3CF-748E-47E8-B434-081A81F9437A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caravel.AspNetCore.Tests", "tests\Caravel.AspNetCore.Tests\Caravel.AspNetCore.Tests.csproj", "{700D13E4-289C-4F8D-8C33-30EB65E266D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caravel.AspNetCore", "src\Caravel.AspNetCore\Caravel.AspNetCore.csproj", "{BF161D03-308F-4389-956A-1D8B5F8EAF4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,9 +26,19 @@ Global
 		{A89DB3CF-748E-47E8-B434-081A81F9437A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A89DB3CF-748E-47E8-B434-081A81F9437A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A89DB3CF-748E-47E8-B434-081A81F9437A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700D13E4-289C-4F8D-8C33-30EB65E266D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700D13E4-289C-4F8D-8C33-30EB65E266D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700D13E4-289C-4F8D-8C33-30EB65E266D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700D13E4-289C-4F8D-8C33-30EB65E266D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF161D03-308F-4389-956A-1D8B5F8EAF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF161D03-308F-4389-956A-1D8B5F8EAF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF161D03-308F-4389-956A-1D8B5F8EAF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF161D03-308F-4389-956A-1D8B5F8EAF4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5E42F78F-AB14-4830-B79A-0790138C017D} = {ADE3464D-BE76-44CF-A723-BDDF40879803}
 		{A89DB3CF-748E-47E8-B434-081A81F9437A} = {29398C8C-3E06-469E-BFEB-4C7BBC431C5D}
+		{700D13E4-289C-4F8D-8C33-30EB65E266D5} = {29398C8C-3E06-469E-BFEB-4C7BBC431C5D}
+		{BF161D03-308F-4389-956A-1D8B5F8EAF4B} = {ADE3464D-BE76-44CF-A723-BDDF40879803}
 	EndGlobalSection
 EndGlobal
