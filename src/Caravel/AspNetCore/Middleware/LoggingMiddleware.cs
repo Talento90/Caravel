@@ -44,25 +44,37 @@ namespace Caravel.AspNetCore.Middleware
             {
                 await LogRequest(request);
 
-                var originalBodyStream = context.Response.Body;
-
-                await using var responseBody = new MemoryStream();
-                
-                context.Response.Body = responseBody;
-
                 var start = Stopwatch.StartNew();
 
-                await _next(context);
+                if (_settings.EnableLogBody)
+                {
+                    var originalBodyStream = context.Response.Body;
 
-                start.Stop();
+                    await using var responseBody = new MemoryStream();
 
-                context.Response.Body.Seek(0, SeekOrigin.Begin);
-                await LogResponse(context.Response, start.Elapsed);
-                context.Response.Body.Seek(0, SeekOrigin.Begin);
+                    context.Response.Body = responseBody;
 
-                await responseBody.CopyToAsync(originalBodyStream);
+                    await _next(context);
+
+                    start.Stop();
+
+                    context.Response.Body.Seek(0, SeekOrigin.Begin);
+                    await LogResponseWithBody(context.Response, start.Elapsed);
+                    context.Response.Body.Seek(0, SeekOrigin.Begin);
+
+                    await responseBody.CopyToAsync(originalBodyStream);
+                }
+                else
+                {
+                    await _next(context);
+
+                    start.Stop();
+
+                    LogResponseWithoutBody(context.Response, start.Elapsed);
+                }
             }
         }
+
 
         private async Task LogRequest(HttpRequest request)
         {
@@ -101,12 +113,25 @@ namespace Caravel.AspNetCore.Middleware
             }
         }
 
-        private async Task LogResponse(HttpResponse response, TimeSpan duration)
+        private void LogResponseWithoutBody(HttpResponse response, TimeSpan duration)
+        {
+            var level = response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information;
+
+            _logger.Log(level, "Response {statusCode} {method} {uri} {duration:0.000}ms",
+                response.StatusCode,
+                response.HttpContext.Request.Method,
+                response.HttpContext.Request.GetDisplayUrl(),
+                duration.TotalMilliseconds
+            );
+        }
+
+
+        private async Task LogResponseWithBody(HttpResponse response, TimeSpan duration)
         {
             var level = response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information;
             var body = string.Empty;
-
-            if (_settings.EnableLogBody || response.StatusCode >= 400)
+            
+            if (response.StatusCode >= 400)
             {
                 body = await new StreamReader(response.Body).ReadToEndAsync();
             }
