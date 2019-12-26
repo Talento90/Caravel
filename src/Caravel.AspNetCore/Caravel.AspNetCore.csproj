@@ -12,7 +12,7 @@
         <LangVersion>8</LangVersion>
         <Title>Caravel.AspNetCore</Title>
         <Authors>Marco Talento</Authors>
-        <Description>Caravel.AspNetCore is a package that contains reusable code.</Description>
+        <Description>Caravel is a package that contains common utilities for building asp.net core applications.</Description>
     </PropertyGroup>
 
     <ItemGroup>
