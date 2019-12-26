@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
 using Caravel.Exceptions;
-using Caravel.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

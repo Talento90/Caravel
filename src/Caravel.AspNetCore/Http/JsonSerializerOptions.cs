@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Caravel.Http
+namespace Caravel.AspNetCore.Http
 {
     public static class JsonSerializerOptions
     {
