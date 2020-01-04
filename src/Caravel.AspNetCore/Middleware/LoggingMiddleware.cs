@@ -83,6 +83,11 @@ namespace Caravel.AspNetCore.Middleware
             var body = string.Empty;
             var headers = request.Headers.Where(h => h.Key != "Authorization");
 
+            if (_settings.HeadersToLog.Any())
+            {
+                headers = headers.Where(h => _settings.HeadersToLog.Contains(h.Key));
+            }
+
             var containsFiles = request.HasFormContentType && request.Form.Files.Any();
 
             if (!containsFiles && _settings.EnableLogBody)
@@ -130,7 +135,7 @@ namespace Caravel.AspNetCore.Middleware
         {
             var level = response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information;
             var body = string.Empty;
-            
+
             if (response.StatusCode >= 400)
             {
                 body = await new StreamReader(response.Body).ReadToEndAsync();

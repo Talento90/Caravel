@@ -146,7 +146,10 @@ namespace Caravel.Tests.AspNetCore.Middleware
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
             var loggingSettings =
-                new LoggingMiddlewareSettings(Enumerable.Empty<string>(), new[] {"/api/v1/profile/password"});
+                new LoggingMiddlewareSettings(
+                    Enumerable.Empty<string>(),
+                    new[] {"/api/v1/profile/password"}
+                );
 
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
