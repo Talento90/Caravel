@@ -8,6 +8,7 @@ using Caravel.AppContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Caravel.AspNetCore.Middleware
 {
@@ -15,30 +16,30 @@ namespace Caravel.AspNetCore.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingMiddleware> _logger;
-        private readonly LoggingMiddlewareSettings _settings;
-        private readonly IAppContext _appContext;
+        private readonly LoggingOptions _options;
+        private readonly IAppContext _context;
 
         public LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> logger,
-            LoggingMiddlewareSettings settings, IAppContext appContext)
+            IOptions<LoggingOptions> options, IAppContext context)
         {
-            _next = next;
-            _logger = logger;
-            _settings = settings;
-            _appContext = appContext;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _next = next ?? throw new ArgumentNullException(nameof(next));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _options = options == null ? new LoggingOptions() : options.Value;
         }
 
         public async Task Invoke(HttpContext context)
         {
             var request = context.Request;
 
-            if (_settings.PathsToIgnore.Any(p => request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
+            if (_options.PathsToIgnore.Any(p => request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
             {
                 await _next(context);
                 return;
             }
 
-            var cid = _appContext.Context.CorrelationId;
-            var uid = _appContext.Context.UserId;
+            var cid = _context.Context.TraceId;
+            var uid = _context.Context.UserId;
 
             using (_logger.BeginScope("{cid} {uid}", cid, uid))
             {
@@ -46,7 +47,7 @@ namespace Caravel.AspNetCore.Middleware
 
                 var start = Stopwatch.StartNew();
 
-                if (_settings.EnableLogBody)
+                if (_options.EnableLogBody)
                 {
                     var originalBodyStream = context.Response.Body;
 
@@ -83,14 +84,14 @@ namespace Caravel.AspNetCore.Middleware
             var body = string.Empty;
             var headers = request.Headers.Where(h => h.Key != "Authorization");
 
-            if (_settings.HeadersToLog.Any())
+            if (_options.HeadersToLog.Any())
             {
-                headers = headers.Where(h => _settings.HeadersToLog.Contains(h.Key));
+                headers = headers.Where(h => _options.HeadersToLog.Contains(h.Key));
             }
 
             var containsFiles = request.HasFormContentType && request.Form.Files.Any();
 
-            if (!containsFiles && _settings.EnableLogBody)
+            if (!containsFiles && _options.EnableLogBody)
             {
                 var buffer = new byte[Convert.ToInt32(request.ContentLength)];
                 await request.Body.ReadAsync(buffer, 0, buffer.Length);
@@ -120,9 +121,7 @@ namespace Caravel.AspNetCore.Middleware
 
         private void LogResponseWithoutBody(HttpResponse response, TimeSpan duration)
         {
-            var level = response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information;
-
-            _logger.Log(level, "Response {statusCode} {method} {uri} {duration:0.000}ms",
+            _logger.Log(LogLevel.Information, "Response {statusCode} {method} {uri} {duration:0.000}ms",
                 response.StatusCode,
                 response.HttpContext.Request.Method,
                 response.HttpContext.Request.GetDisplayUrl(),
@@ -133,7 +132,6 @@ namespace Caravel.AspNetCore.Middleware
 
         private async Task LogResponseWithBody(HttpResponse response, TimeSpan duration)
         {
-            var level = response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information;
             var body = string.Empty;
 
             if (response.StatusCode >= 400)
@@ -141,7 +139,7 @@ namespace Caravel.AspNetCore.Middleware
                 body = await new StreamReader(response.Body).ReadToEndAsync();
             }
 
-            _logger.Log(level, "Response {statusCode} {method} {uri} {body} {duration:0.000}ms",
+            _logger.Log(LogLevel.Information, "Response {statusCode} {method} {uri} {body} {duration:0.000}ms",
                 response.StatusCode,
                 response.HttpContext.Request.Method,
                 response.HttpContext.Request.GetDisplayUrl(),
@@ -151,6 +149,6 @@ namespace Caravel.AspNetCore.Middleware
         }
 
         private bool ShouldRedactBody(HttpRequest request)
-            => _settings.PathsToRedact.Any(p => request.Path.Value.ToLower().StartsWith(p));
+            => _options.PathsToRedact.Any(p => request.Path.Value.ToLower().StartsWith(p));
     }
 }

@@ -20,7 +20,7 @@ namespace Caravel.AspNetCore.Http
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            request.Headers.Add("X-Correlation-Id", _appContext.Context.CorrelationId);
+            request.Headers.Add("X-Trace-Id", _appContext.Context.TraceId);
 
             if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("User-Agent"))
             {

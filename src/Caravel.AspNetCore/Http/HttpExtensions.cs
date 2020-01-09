@@ -51,13 +51,13 @@ namespace Caravel.AspNetCore.Http
             return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions.CamelCase());
         }
 
-        public static void WriteJson<T>(this HttpResponse response, T obj, string? contentType = null)
+        public static Task WriteJsonAsync<T>(this HttpResponse response, T obj)
         {
-            response.ContentType = contentType ?? "application/json";
-
-            using var writer = new Utf8JsonWriter(response.Body);
+            response.ContentType = "application/json";
             
-            JsonSerializer.Serialize(writer, obj, JsonSerializerOptions.CamelCase());
+            var json = JsonSerializer.Serialize(obj, JsonSerializerOptions.CamelCase());
+
+            return response.WriteAsync(json);
         }
 
         public static string BuildQueryString(this object obj)
