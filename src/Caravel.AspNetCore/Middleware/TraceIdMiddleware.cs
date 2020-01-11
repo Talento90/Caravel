@@ -11,13 +11,13 @@ namespace Caravel.AspNetCore.Middleware
     public class TraceIdMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IAppContext _context;
+        private readonly IAppContextAccessor _contextAccessor;
         private readonly TraceIdOptions _options;
 
-        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdOptions> options, IAppContext context)
+        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdOptions> options, IAppContextAccessor contextAccessor)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
             _options = options == null ? new TraceIdOptions() : options.Value;
         }
 
@@ -37,7 +37,7 @@ namespace Caravel.AspNetCore.Middleware
                 });
             }
 
-            _context.Context = new AppContext.AppContext(context.TraceIdentifier, context.User.Id());
+            _contextAccessor.Context = new AppContext.AppContext(context.TraceIdentifier, context.User.Id());
 
             await _next(context);
         }

@@ -15,7 +15,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
         public async Task Should_Generate_New_Trace_Id()
         {
             // Arrange
-            var appContext = new AppContextMock();
+            var appContext = new AppContextAccessorMock();
             var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdOptions()),  appContext);
             var httpContext = new DefaultHttpContext();
             //Act
@@ -29,7 +29,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
         public async Task Should_Reuse_Trace_Id()
         {
             // Arrange
-            var appContext = new AppContextMock();
+            var appContext = new AppContextAccessorMock();
             var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdOptions()), appContext);
             var context = new DefaultHttpContext();
 

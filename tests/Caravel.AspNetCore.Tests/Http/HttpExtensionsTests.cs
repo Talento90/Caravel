@@ -5,15 +5,23 @@ namespace Caravel.AspNetCore.Tests.Http
 {
     public class HttpExtensionsTests
     {
+        private class QueryModel
+        {
+            public int? Page { get; set; }
+            public int? Count { get; set; }
+            public bool? IsActive { get; set; }
+            public string? Type { get; set; }
+        }
+        
         [Fact]
         public void Should_Build_Query_String()
         {
-            var qsModel = new
+            var qsModel = new QueryModel
             {
                 Page = 10,
                 Count = 2,
                 IsActive = true,
-                Type = (string?) null
+                Type = null
             };
 
             var qs = qsModel.BuildQueryString();

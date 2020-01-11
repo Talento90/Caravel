@@ -35,7 +35,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
                 options,
-                new AppContextMock()
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -79,7 +79,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
                 options,
-                new AppContextMock()
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -125,7 +125,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
                 options,
-                new AppContextMock()
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -154,7 +154,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
                 options,
-                new AppContextMock()
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -188,7 +188,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
                 options,
-                new AppContextMock()
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();

@@ -2,6 +2,9 @@ using System;
 
 namespace Caravel
 {
+    /// <summary>
+    /// Utility class to manage Environment variables.
+    /// </summary>
     public static class Env
     {
         public static bool IsLocalEnvironment()
