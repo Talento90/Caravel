@@ -13,13 +13,23 @@ namespace Caravel.AspNetCore.Http
 {
     public static class HttpExtensions
     {
+        /// <summary>
+        /// Get the current user id.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Return the current user id or null if does not exists.</returns>
         public static string? Id(this ClaimsPrincipal user)
         {
-            return user?.Claims?.FirstOrDefault(c => c.Type == "username")?.Value;
+            return user?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         }
 
-        public static Task<HttpResponseMessage> PostJsonAsync<T>(this HttpClient httpClient, string requestUri, T body,
-            CancellationToken ct)
+
+        public static Task<HttpResponseMessage> PostJsonAsync<T>(this HttpClient httpClient, string requestUri, T body)
+        {
+            return PostJsonAsync(httpClient, requestUri, body, CancellationToken.None);
+        }
+
+        public static Task<HttpResponseMessage> PostJsonAsync<T>(this HttpClient httpClient, string requestUri, T body, CancellationToken ct)
         {
             var json = JsonSerializer.Serialize(body, JsonSerializerOptions.CamelCase());
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -27,8 +37,12 @@ namespace Caravel.AspNetCore.Http
             return httpClient.PostAsync(requestUri, content, ct);
         }
 
-        public static Task<HttpResponseMessage> PutJsonAsync<T>(this HttpClient httpClient, string requestUri, T body,
-            CancellationToken ct)
+        public static Task<HttpResponseMessage> PutJsonAsync<T>(this HttpClient httpClient, string requestUri, T body) 
+        {
+            return PutJsonAsync(httpClient, requestUri, body, CancellationToken.None);
+        }
+        
+        public static Task<HttpResponseMessage> PutJsonAsync<T>(this HttpClient httpClient, string requestUri, T body, CancellationToken ct)
         {
             var json = JsonSerializer.Serialize(body, JsonSerializerOptions.CamelCase());
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -36,8 +50,12 @@ namespace Caravel.AspNetCore.Http
             return httpClient.PutAsync(requestUri, content, ct);
         }
 
-        public static Task<HttpResponseMessage> PatchJsonAsync<T>(this HttpClient httpClient, string requestUri, T body,
-            CancellationToken ct)
+        public static Task<HttpResponseMessage> PatchJsonAsync<T>(this HttpClient httpClient, string requestUri, T body)
+        {
+            return PatchJsonAsync(httpClient, requestUri, body, CancellationToken.None);
+        }
+        
+        public static Task<HttpResponseMessage> PatchJsonAsync<T>(this HttpClient httpClient, string requestUri, T body, CancellationToken ct)
         {
             var json = JsonSerializer.Serialize(body, JsonSerializerOptions.CamelCase());
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -51,13 +69,13 @@ namespace Caravel.AspNetCore.Http
             return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions.CamelCase());
         }
 
-        public static void WriteJson<T>(this HttpResponse response, T obj, string? contentType = null)
+        public static Task WriteJsonAsync<T>(this HttpResponse response, T obj)
         {
-            response.ContentType = contentType ?? "application/json";
+            response.ContentType = "application/json";
 
-            using var writer = new Utf8JsonWriter(response.Body);
-            
-            JsonSerializer.Serialize(writer, obj, JsonSerializerOptions.CamelCase());
+            var json = JsonSerializer.Serialize(obj, JsonSerializerOptions.CamelCase());
+
+            return response.WriteAsync(json);
         }
 
         public static string BuildQueryString(this object obj)

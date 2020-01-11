@@ -6,6 +6,7 @@ using Caravel.AspNetCore.Middleware;
 using Caravel.Tests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -29,12 +30,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var loggingSettings = LoggingMiddlewareSettings.DefaultSettings();
+            var options = Options.Create(new LoggingOptions());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
-                loggingSettings,
-                new AppContextMock()
+                options,
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -73,12 +74,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var loggingSettings = LoggingMiddlewareSettings.DefaultSettings();
+            var options = Options.Create(new LoggingOptions());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
-                loggingSettings,
-                new AppContextMock()
+                options,
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -99,13 +100,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
                     0,
                     It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Request")),
                     It.IsAny<Exception>(),
-                    //It.IsAny<Func<object, Exception, string>>()),
                     (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
                 Times.Once
             );
 
             loggerMock.Verify(l => l.Log(
-                    LogLevel.Error,
+                    LogLevel.Information,
                     0,
                     It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Response")),
                     It.IsAny<Exception>(),
@@ -120,12 +120,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var loggingSettings = LoggingMiddlewareSettings.DefaultSettings();
+            var options = Options.Create(new LoggingOptions());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
-                loggingSettings,
-                new AppContextMock()
+                options,
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -145,17 +145,16 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var loggingSettings =
-                new LoggingMiddlewareSettings(
-                    Enumerable.Empty<string>(),
-                    new[] {"/api/v1/profile/password"}
-                );
+            var options = Options.Create(new LoggingOptions()
+            {
+                PathsToRedact = new[] {"/api/v1/profile/password"}
+            });
 
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
-                loggingSettings,
-                new AppContextMock()
+                options,
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();
@@ -184,12 +183,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var loggingSettings = LoggingMiddlewareSettings.DefaultSettings();
+            var options = Options.Create(new LoggingOptions());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
-                loggingSettings,
-                new AppContextMock()
+                options,
+                new AppContextAccessorMock()
             );
 
             var context = CreateHttpContext();

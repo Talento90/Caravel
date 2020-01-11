@@ -30,7 +30,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
                     return Task.CompletedTask;
                 },
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -56,7 +56,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             const string innerMessage = "Unknown Exception Message";
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new Exception(innerMessage),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -73,7 +73,6 @@ namespace Caravel.Tests.AspNetCore.Middleware
             //Assert
             Assert.NotNull(httpError);
             Assert.Equal(Errors.Error.Message, httpError.Detail);
-            Assert.Equal(innerMessage, httpError.InnerMessage);
             Assert.Equal((int) HttpStatusCode.InternalServerError, httpError.Status);
         }
 
@@ -83,7 +82,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new NotFoundException(Errors.NotFound),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -109,7 +108,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new ValidationException(Errors.Validation),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -135,7 +134,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             // Arrange
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new OperationCancelledException(Errors.OperationWasCancelled),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -154,7 +153,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             Assert.Equal(Errors.OperationWasCancelled.Message, httpError.Detail);
             Assert.Equal((int) HttpStatusCode.Accepted, httpError.Status);
         }
-        
+
         [Fact]
         public async Task Should_Handle_System_Operation_Cancelled_Exception_Exception()
         {
@@ -163,7 +162,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new OperationCanceledException(errorMessage),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -180,17 +179,16 @@ namespace Caravel.Tests.AspNetCore.Middleware
             //Assert
             Assert.NotNull(httpError);
             Assert.Equal(Errors.OperationWasCancelled.Message, httpError.Detail);
-            Assert.Equal(errorMessage, httpError.InnerMessage);
             Assert.Equal((int) HttpStatusCode.Accepted, httpError.Status);
         }
-        
+
         [Fact]
         public async Task Should_Handle_Unauthorized_Exception()
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new UnauthorizedException(Errors.Unauthorized),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -210,14 +208,14 @@ namespace Caravel.Tests.AspNetCore.Middleware
             Assert.Equal((int) HttpStatusCode.Unauthorized, httpError.Status);
         }
 
-        
+
         [Fact]
         public async Task Should_Handle_Permission_Exception()
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new PermissionException(Errors.Permission),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -236,8 +234,8 @@ namespace Caravel.Tests.AspNetCore.Middleware
             Assert.Equal(Errors.Permission.Message, httpError.Detail);
             Assert.Equal((int) HttpStatusCode.Forbidden, httpError.Status);
         }
-        
-                
+
+
         [Fact]
         public async Task Should_Handle_Invalid_Operation_Exception()
         {
@@ -245,7 +243,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
             const string errorMessage = "User cannot perform this action";
             var middleware = new ExceptionMiddleware(
                 (innerHttpContext) => throw new InvalidOperationException(errorMessage),
-                new LoggerFactory()
+                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
             var context = new DefaultHttpContext();
@@ -262,7 +260,6 @@ namespace Caravel.Tests.AspNetCore.Middleware
             //Assert
             Assert.NotNull(httpError);
             Assert.Equal(Errors.InvalidOperation.Message, httpError.Detail);
-            Assert.Equal(errorMessage, httpError.InnerMessage);
             Assert.Equal((int) HttpStatusCode.BadRequest, httpError.Status);
         }
     }
