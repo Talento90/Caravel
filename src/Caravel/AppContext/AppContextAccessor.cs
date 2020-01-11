@@ -8,7 +8,7 @@ namespace Caravel.AppContext
     ///
     /// This implementation is based on: https://github.com/dotnet/aspnetcore/blob/master/src/Http/Http/src/HttpContextAccessor.cs 
     /// </summary>
-    public class AppContextAccessorAccessor : IAppContextAccessor
+    public class AppContextAccessor : IAppContextAccessor
     {
         private static readonly AsyncLocal<AppContextHolder> AppContextCurrent = new AsyncLocal<AppContextHolder>();
 
