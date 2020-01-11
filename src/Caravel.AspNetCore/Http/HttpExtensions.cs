@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -18,12 +19,16 @@ namespace Caravel.AspNetCore.Http
         /// </summary>
         /// <param name="user"></param>
         /// <returns>Return the current user id or null if does not exists.</returns>
-        public static string? Id(this ClaimsPrincipal user)
+        public static Guid? Id(this ClaimsPrincipal user)
         {
-            return user?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var uid = user?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (Guid.TryParse(uid, out var result))
+                return result;
+
+            return null;
         }
-
-
+        
         public static Task<HttpResponseMessage> PostJsonAsync<T>(this HttpClient httpClient, string requestUri, T body)
         {
             return PostJsonAsync(httpClient, requestUri, body, CancellationToken.None);

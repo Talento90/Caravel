@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 
 namespace Caravel.AppContext
@@ -16,7 +17,7 @@ namespace Caravel.AppContext
         /// </summary>
         public AppContext Context
         {
-            get => AppContextCurrent?.Value?.Context ?? new AppContext(string.Empty, string.Empty);
+            get => AppContextCurrent?.Value?.Context ?? new AppContext(string.Empty, Guid.Empty);
             set
             {
                 var holder = AppContextCurrent.Value;

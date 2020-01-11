@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Caravel.AppContext
@@ -10,7 +11,7 @@ namespace Caravel.AppContext
         /// <summary>
         /// Get the current user id.
         /// </summary>
-        public string? UserId { get; }
+        public Guid? UserId { get; }
         /// <summary>
         /// Get the current trace id. 
         /// </summary>
@@ -20,7 +21,7 @@ namespace Caravel.AppContext
         /// </summary>
         public IDictionary<string, object> Data { get; }
 
-        public AppContext(string traceId, string? userId)
+        public AppContext(string traceId, Guid? userId)
         {
             UserId = userId;
             TraceId = traceId;
