@@ -17,11 +17,11 @@ namespace Caravel.AspNetCore.Http
         {
         }
 
-        public HttpError(string title, HttpStatusCode code, CaravelException ex, string traceId)
+        public HttpError(HttpStatusCode code, CaravelException ex, string traceId)
         {
             Exception = ex;
             Status = (int) code;
-            Title = title;
+            Title = ex.Error.Message;
             Detail = ex.Message;
             Code = ex.Error.Code;
             TraceId = traceId;

@@ -53,16 +53,16 @@ namespace Caravel.AspNetCore.Middleware
 
             return ex switch
             {
-                NotFoundException e => new HttpError("Not Found", HttpStatusCode.NotFound, e, traceId),
-                UnauthorizedException e => new HttpError("Unauthorized", HttpStatusCode.Unauthorized, e, traceId),
-                PermissionException e => new HttpError("Forbidden", HttpStatusCode.Forbidden, e, traceId),
-                ValidationException e => new HttpError("Bad Request", HttpStatusCode.BadRequest, e, traceId),
-                ConflictException e => new HttpError("Conflict", HttpStatusCode.Conflict, e, traceId),
-                OperationCancelledException e => new HttpError("Operation was cancelled", HttpStatusCode.Accepted, e, traceId),
-                OperationCanceledException e => new HttpError("Request was cancelled", HttpStatusCode.Accepted, new OperationCancelledException(Errors.OperationWasCancelled, e), traceId),
-                InvalidOperationException e => new HttpError("Invalid Operation Error", HttpStatusCode.BadRequest, new CaravelException(Errors.InvalidOperation, e), traceId),
-                CaravelException e => new HttpError("Internal Server Error", HttpStatusCode.InternalServerError, e, traceId),
-                _ => new HttpError("Internal Server Error", HttpStatusCode.InternalServerError, new CaravelException(Errors.Error, ex), traceId)
+                NotFoundException e => new HttpError(HttpStatusCode.NotFound, e, traceId),
+                UnauthorizedException e => new HttpError(HttpStatusCode.Unauthorized, e, traceId),
+                PermissionException e => new HttpError(HttpStatusCode.Forbidden, e, traceId),
+                ValidationException e => new HttpError(HttpStatusCode.BadRequest, e, traceId),
+                ConflictException e => new HttpError(HttpStatusCode.Conflict, e, traceId),
+                OperationCancelledException e => new HttpError(HttpStatusCode.Accepted, e, traceId),
+                OperationCanceledException e => new HttpError(HttpStatusCode.Accepted, new OperationCancelledException(Errors.OperationWasCancelled, e), traceId),
+                InvalidOperationException e => new HttpError(HttpStatusCode.BadRequest, new CaravelException(Errors.InvalidOperation, e), traceId),
+                CaravelException e => new HttpError(HttpStatusCode.InternalServerError, e, traceId),
+                _ => new HttpError(HttpStatusCode.InternalServerError, new CaravelException(Errors.Error, ex), traceId)
             };
         }
     }

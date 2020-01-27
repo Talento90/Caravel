@@ -21,7 +21,6 @@ namespace Caravel.AspNetCore.Filters
                     );
 
                 var httpError = new HttpError(
-                        "Bad Request",
                         HttpStatusCode.BadRequest,
                         new ValidationException(Errors.FieldsValidation, errors),
                         filterContext.HttpContext.TraceIdentifier

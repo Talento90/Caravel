@@ -15,5 +15,10 @@ namespace Caravel.Exceptions
         {
             Error = error;
         }
+        
+        public CaravelException(Error error, string message) : base(message)
+        {
+            Error = error;
+        }
     }
 }

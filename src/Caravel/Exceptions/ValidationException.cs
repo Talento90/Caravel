@@ -16,5 +16,7 @@ namespace Caravel.Exceptions
         {
             Errors = errors ?? new Dictionary<string, string[]>();;
         }
+        
+        public ValidationException(Error error, string message) : base(error, message){}
     }
 }
