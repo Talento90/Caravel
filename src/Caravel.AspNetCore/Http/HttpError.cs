@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
 using Caravel.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Caravel.AspNetCore.Http
@@ -17,19 +19,24 @@ namespace Caravel.AspNetCore.Http
         {
         }
 
-        public HttpError(HttpStatusCode code, CaravelException ex, string traceId)
+        public HttpError(HttpContext context, HttpStatusCode code, CaravelException ex)
         {
             Exception = ex;
             Status = (int) code;
             Title = ex.Error.Message;
             Detail = ex.Message;
             Code = ex.Error.Code;
-            TraceId = traceId;
+            TraceId = context.TraceIdentifier;
+            Instance = context.Request?.Path;
         }
 
         public HttpError SetErrors(IDictionary<string, string[]> errors)
         {
-            Extensions["errors"] = errors;
+            if (errors != null && errors.Any())
+            {
+                Extensions["errors"] = errors;    
+            }
+            
             return this;
         }
     }

@@ -28,20 +28,10 @@ namespace Caravel.AspNetCore.Middleware
             catch (Exception ex)
             {
                 var httpError = HandleException(context, ex);
+                var severity = httpError?.Exception?.Error?.Severity ?? Severity.High;
                 
-                switch (httpError?.Exception?.Error?.Severity)
-                {
-                    case Severity.Low:
-                        _logger.LogInformation(ex, ex.Message);
-                        break;
-                    case Severity.Medium:
-                        _logger.LogWarning(ex, ex.Message);
-                        break;
-                    default:
-                        _logger.LogError(ex, ex.Message);
-                        break;
-                }
-
+                _logger.LogError(ex, $"Severity: {severity} Error: {ex.Message}");
+                
                 context.Response.StatusCode = httpError?.Status ?? (int) HttpStatusCode.InternalServerError;
                 await context.Response.WriteJsonAsync(httpError);
             }
@@ -49,20 +39,18 @@ namespace Caravel.AspNetCore.Middleware
 
         protected virtual HttpError HandleException(HttpContext context, Exception ex)
         {
-            var traceId = context.TraceIdentifier;
-
             return ex switch
             {
-                NotFoundException e => new HttpError(HttpStatusCode.NotFound, e, traceId),
-                UnauthorizedException e => new HttpError(HttpStatusCode.Unauthorized, e, traceId),
-                PermissionException e => new HttpError(HttpStatusCode.Forbidden, e, traceId),
-                ValidationException e => new HttpError(HttpStatusCode.BadRequest, e, traceId),
-                ConflictException e => new HttpError(HttpStatusCode.Conflict, e, traceId),
-                OperationCancelledException e => new HttpError(HttpStatusCode.Accepted, e, traceId),
-                OperationCanceledException e => new HttpError(HttpStatusCode.Accepted, new OperationCancelledException(Errors.OperationWasCancelled, e), traceId),
-                InvalidOperationException e => new HttpError(HttpStatusCode.BadRequest, new CaravelException(Errors.InvalidOperation, e), traceId),
-                CaravelException e => new HttpError(HttpStatusCode.InternalServerError, e, traceId),
-                _ => new HttpError(HttpStatusCode.InternalServerError, new CaravelException(Errors.Error, ex), traceId)
+                NotFoundException e => new HttpError(context, HttpStatusCode.NotFound, e),
+                UnauthorizedException e => new HttpError(context, HttpStatusCode.Unauthorized, e),
+                PermissionException e => new HttpError(context, HttpStatusCode.Forbidden, e),
+                ValidationException e => new HttpError(context, HttpStatusCode.BadRequest, e).SetErrors(e.Errors),
+                ConflictException e => new HttpError(context, HttpStatusCode.Conflict, e),
+                OperationCancelledException e => new HttpError(context, HttpStatusCode.Accepted, e),
+                OperationCanceledException e => new HttpError(context, HttpStatusCode.Accepted, new OperationCancelledException(Errors.OperationWasCancelled, e)),
+                InvalidOperationException e => new HttpError(context, HttpStatusCode.BadRequest, new CaravelException(Errors.InvalidOperation, e)),
+                CaravelException e => new HttpError(context, HttpStatusCode.InternalServerError, e),
+                _ => new HttpError(context, HttpStatusCode.InternalServerError, new CaravelException(Errors.Error, ex))
             };
         }
     }
