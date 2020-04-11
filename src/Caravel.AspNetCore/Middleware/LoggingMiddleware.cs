@@ -12,6 +12,10 @@ using Microsoft.Extensions.Options;
 
 namespace Caravel.AspNetCore.Middleware
 {
+    /// <summary>
+    /// LoggingMiddleware logs the HTTP request and responses.
+    /// Check the <see cref="LoggingOptions"/> to configure the logging.
+    /// </summary>
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;

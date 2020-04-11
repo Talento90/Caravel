@@ -8,6 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Caravel.AspNetCore.Middleware
 {
+    /// <summary>
+    /// ExceptionMiddleware captures and handle all the application exceptions.
+    /// It converts the exception into an <see cref="HttpError"/>.
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -28,10 +32,22 @@ namespace Caravel.AspNetCore.Middleware
             catch (Exception ex)
             {
                 var httpError = HandleException(context, ex);
-                var severity = httpError?.Exception?.Error?.Severity ?? Severity.High;
-                
-                _logger.LogError(ex, $"Severity: {severity} Error: {ex.Message}");
-                
+                var caravelException = ex as CaravelException;
+                var severity = caravelException?.Error?.Severity ?? Severity.High;
+
+                switch (severity)
+                {
+                    case Severity.Low:
+                        _logger.LogInformation(ex, "Severity: {severity} Error: {ex.Message}", severity, ex.Message);
+                        break;
+                    case Severity.Medium:
+                        _logger.LogWarning(ex, "Severity: {severity} Error: {ex.Message}", severity, ex.Message);
+                        break;
+                    case Severity.High:
+                        _logger.LogError(ex, "Severity: {severity} Error: {ex.Message}", severity, ex.Message);
+                        break;
+                }
+
                 context.Response.StatusCode = httpError?.Status ?? (int) HttpStatusCode.InternalServerError;
                 await context.Response.WriteJsonAsync(httpError);
             }

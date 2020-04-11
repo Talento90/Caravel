@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Middleware
 {
+    /// <summary>
+    /// AppVersionMiddleware returns the current version of the application.
+    /// </summary>
     public class AppVersionMiddleware
     {
         private readonly RequestDelegate _next;

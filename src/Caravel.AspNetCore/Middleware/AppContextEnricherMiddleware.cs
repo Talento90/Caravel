@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Middleware
 {
+    /// <summary>
+    /// AppContextEnricherMiddleware creates and set the <see cref="AppContext"/>.
+    /// This middleware is required in order to use the <see cref="AppContext"/> in the application.
+    /// </summary>
     public class AppContextEnricherMiddleware
     {
         private readonly RequestDelegate _next;

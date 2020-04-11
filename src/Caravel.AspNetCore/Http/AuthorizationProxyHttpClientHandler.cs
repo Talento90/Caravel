@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Http
 {
+    /// <summary>
+    /// HttpClient Handler to proxy the authorization header.
+    /// </summary>
     public class AuthorizationProxyHttpClientHandler : DelegatingHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

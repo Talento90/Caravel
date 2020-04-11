@@ -4,9 +4,14 @@ using Caravel.AspNetCore.Http;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Caravel.AspNetCore.Filters
 {
+    /// <summary>
+    /// ValidateModelFilter validates the <see cref="ModelStateDictionary"/>
+    /// Returns 400 if not valid.
+    /// </summary>
     public class ValidateModelFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext filterContext)

@@ -1,5 +1,8 @@
 namespace Caravel.Exceptions
 {
+    /// <summary>
+    /// Basic application errors.
+    /// </summary>
     public static class Errors
     {
         // Generic errors

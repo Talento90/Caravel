@@ -8,6 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace Caravel.AspNetCore.Middleware
 {
+    /// <summary>
+    /// TraceIdMiddleware reads a specific header in order to inject the TraceId/CorrelationId.
+    /// </summary>
     public class TraceIdMiddleware
     {
         private readonly RequestDelegate _next;

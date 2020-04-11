@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Caravel.Exceptions
 {
+    /// <summary>
+    /// ValidationException should be thrown when any validation fails. 
+    /// </summary>
     public class ValidationException : CaravelException
     {
         public IDictionary<string, string[]> Errors { get; }
@@ -16,7 +19,10 @@ namespace Caravel.Exceptions
         {
             Errors = errors ?? new Dictionary<string, string[]>();;
         }
-        
-        public ValidationException(Error error, string message) : base(error, message){}
+
+        public ValidationException(Error error, string message) : base(error, message)
+        {
+            Errors = new Dictionary<string, string[]>();
+        }
     }
 }
