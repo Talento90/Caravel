@@ -1,14 +1,12 @@
 # Caravel ![](https://github.com/Talento90/Caravel/workflows/Publish/badge.svg)
 
-![logo](https://github.com/Talento90/Caravel/blob/master/assets/logo.svg=100)
-
 <img src="https://github.com/Talento90/Caravel/blob/master/assets/logo.svg" width="200">
 
-### Features
+## Features
 
 This project contains 2 different nuget packages.
 
-#### Caravel
+### Caravel
 
 This package does not have any external dependency and it brings all basic utilities that every application should handle such as application context or exceptions.
 
@@ -58,7 +56,7 @@ var json = JsonSerializer.Serialize(obj, JsonSerializerOptions.CamelCase());
 ```
 
 
-#### Caravel.AspNetCore
+### Caravel.AspNetCore
 
 This package contains reusable middleware, http utilities that every application needs.
 
@@ -109,12 +107,12 @@ app.UseMiddleware<TraceIdMiddleware>();
 ```
 
 
-### Projects using Caravel
+## Projects using Caravel
 
 * [Caravel Template](https://github.com/Talento90/Caravel-Template) - .NET template that generates a functional web api using the *best practices*.
 * [.NET Careers](https://dotnet.careers) - Connecting .NET engineers with amazing companies and help them to find their next challenge.
 
 
-### Credits
+## Credits
 
 Logo made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
