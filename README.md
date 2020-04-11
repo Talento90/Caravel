@@ -1,12 +1,14 @@
 # Caravel ![](https://github.com/Talento90/Caravel/workflows/Publish/badge.svg)
 
-![logo](https://github.com/Talento90/Caravel/blob/master/assets/logo.svg)
+![logo](https://github.com/Talento90/Caravel/blob/master/assets/logo.svg=100)
+
+<img src="https://github.com/Talento90/Caravel/blob/master/assets/logo.svg" width="200">
 
 ### Features
 
 This project contains 2 different nuget packages.
 
-##### Caravel
+#### Caravel
 
 This package does not have any external dependency and it brings all basic utilities that every application should handle such as application context or exceptions.
 
@@ -34,6 +36,7 @@ var exception = new CaravelException(DatabaseError, innerException);
 ```
 
 * DateTime Clock
+
 ```c#
 IClock clock = new DateTimeClock();
 
@@ -49,24 +52,31 @@ client.PostJsonAsync("api/v1/books", createBook, cancellationToken);
 ```
 
 * Json Converters
+
 ```c#
 var json = JsonSerializer.Serialize(obj, JsonSerializerOptions.CamelCase());
 ```
 
 
-##### Caravel.AspNetCore
+#### Caravel.AspNetCore
 
 This package contains reusable middleware, http utilities that every application needs.
 
 * ValidateModelFilter
-```c#
 
+```c#
+.AddMvcOptions(opt =>
+{
+    opt.Filters.Add(new ValidateModelFilter());
+})
 ```
 * Application version Middleware
+
 ```c#
 app.UseAppVersion("/api/version");
 ```
 * Logging Middleware
+
 ```c#
 app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingOptions
 {
@@ -75,10 +85,12 @@ app.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingOptions
 
 ```
 * Exception Middleware
+
 ```c#
 // Handle exceptions according to RFC: https://tools.ietf.org/html/rfc7807
 app.UseMiddleware<ExceptionMiddleware>();
 ```
+
 ```json
 {
   "traceId": "30b860d8-03cd-440e-9653-d5f0d090d86a",
@@ -90,7 +102,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 }
 ```
 
-* TraceId/CorrelationId Middleware 
+* TraceId/CorrelationId Middleware
+
 ```c#
 app.UseMiddleware<TraceIdMiddleware>();
 ```
