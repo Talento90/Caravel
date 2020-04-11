@@ -2,9 +2,11 @@
 
 <img src="https://github.com/Talento90/Caravel/blob/master/assets/logo.svg" width="200">
 
+Caravel is a SDK to help developers building .NET applications.
+
 ## Features
 
-This project contains 2 different nuget packages.
+This project is split in 2 different packages:
 
 ### Caravel
 

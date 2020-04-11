@@ -6,7 +6,7 @@
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.4.2</PackageVersion>
+        <PackageVersion>0.5.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk</PackageTags>
         <LangVersion>8</LangVersion>
@@ -15,7 +15,7 @@
         <Description>Caravel is a package that contains common utilities for building asp.net core applications.</Description>
         <PackageProjectUrl>https://github.com/Talento90/Caravel</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicenseUrl>
-        <PackageIconUrl>https://github.com/Talento90/Caravel/blob/master/assets/logo.ico</PackageIconUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIconUrl>
     </PropertyGroup>
 
     <ItemGroup>
