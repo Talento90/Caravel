@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Caravel.Exceptions;
+using Caravel.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,21 +21,22 @@ namespace Caravel.AspNetCore.Http
         /// <summary>
         /// Error code must a well known code in the <see cref="Errors"/> class.
         /// </summary>
-        public int Code { get; set; }
+        public string Code { get; set; }
         
         public HttpError()
         {
         }
-
-        public HttpError(HttpContext context, HttpStatusCode code, CaravelException ex)
+        
+        public HttpError(HttpContext context, HttpStatusCode code, Error error)
         {
             Status = (int) code;
-            Title = ex.Error.Message;
-            Detail = ex.Message;
-            Code = ex.Error.Code;
+            Title = error.Message;
+            Detail = error.Details;
+            Code = error.Code;
             TraceId = context.TraceIdentifier;
             Instance = context.Request?.Path;
         }
+        
 
         /// <summary>
         /// Set the errors.

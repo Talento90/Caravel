@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -57,16 +58,12 @@ namespace Caravel.AspNetCore.Middleware
         {
             return ex switch
             {
-                NotFoundException e => new HttpError(context, HttpStatusCode.NotFound, e),
-                UnauthorizedException e => new HttpError(context, HttpStatusCode.Unauthorized, e),
-                PermissionException e => new HttpError(context, HttpStatusCode.Forbidden, e),
-                ValidationException e => new HttpError(context, HttpStatusCode.BadRequest, e).SetErrors(e.Errors),
-                ConflictException e => new HttpError(context, HttpStatusCode.Conflict, e),
-                OperationCancelledException e => new HttpError(context, HttpStatusCode.Accepted, e),
-                OperationCanceledException e => new HttpError(context, HttpStatusCode.Accepted, new OperationCancelledException(Errors.OperationWasCancelled, e)),
-                InvalidOperationException e => new HttpError(context, HttpStatusCode.BadRequest, new CaravelException(Errors.InvalidOperation, e)),
-                CaravelException e => new HttpError(context, HttpStatusCode.InternalServerError, e),
-                _ => new HttpError(context, HttpStatusCode.InternalServerError, new CaravelException(Errors.Error, ex))
+                NotFoundException e => new HttpError(context, HttpStatusCode.NotFound, new Error("not_found", "The resource does not exists.")),
+                UnauthorizedException e => new HttpError(context, HttpStatusCode.Unauthorized, new Error("unauthorized", "User is not authenticated.")),
+                PermissionException e => new HttpError(context, HttpStatusCode.Forbidden, new Error("permission", "Insufficient permissions to execute the operation.")),
+                ValidationException e => new HttpError(context, HttpStatusCode.BadRequest, new Error("validation", "Validation error.")).SetErrors(e.Errors),
+                ConflictException e => new HttpError(context, HttpStatusCode.Conflict, new Error("conflict",  "Conflict executing the operation.")),
+                _ => new HttpError(context, HttpStatusCode.InternalServerError, new Error("internal", "Internal error server."))
             };
         }
     }

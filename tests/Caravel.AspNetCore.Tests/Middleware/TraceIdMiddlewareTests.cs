@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Middleware;
-using Caravel.Tests.Mocks;
+using Caravel.AspNetCore.Tests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;

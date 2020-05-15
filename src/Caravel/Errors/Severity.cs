@@ -1,4 +1,4 @@
-namespace Caravel.Exceptions
+namespace Caravel.Errors
 {
     /// <summary>
     /// Error Severity

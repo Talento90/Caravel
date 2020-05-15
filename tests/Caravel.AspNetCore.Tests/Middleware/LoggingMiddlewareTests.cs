@@ -1,16 +1,15 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Middleware;
-using Caravel.Tests.Mocks;
+using Caravel.AspNetCore.Tests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
-namespace Caravel.Tests.AspNetCore.Middleware
+namespace Caravel.AspNetCore.Tests.Middleware
 {
     public class LoggingMiddlewareTests
     {

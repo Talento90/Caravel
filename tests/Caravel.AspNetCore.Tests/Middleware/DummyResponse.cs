@@ -1,4 +1,4 @@
-namespace Caravel.Tests.AspNetCore.Middleware
+namespace Caravel.AspNetCore.Tests.Middleware
 {
     public class DummyResponse
     {

@@ -1,3 +1,4 @@
+using Caravel.Errors;
 using Caravel.Exceptions;
 using Caravel.Functional;
 using Xunit;
@@ -21,13 +22,13 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Fold_Should_Return_Left_Value()
         {
-            var left = Either.Left<Error, string>(Errors.Validation);
+            var left = Either.Left<string, string>("error");
 
             var result = left.Fold(
-                (e) => e.Message,
+                (e) => e,
                 (r) => r);
 
-            Assert.Equal(Errors.Validation.Message, result);
+            Assert.Equal("error", result);
         }
 
         [Fact]
@@ -48,16 +49,16 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Map_Should_Return_Left_Value()
         {
-            var left = Either.Left<Error, string>(Errors.Validation);
+            var left = Either.Left<string, string>("error");
 
             var result = left
                 .Map((r) => r.Length)
                 .Map((i => i.ToString()))
                 .Fold(
-                    (l) => l.Message,
+                    (l) => l,
                     (r) => r);
 
-            Assert.Equal(Errors.Validation.Message, result);
+            Assert.Equal("error", result);
         }
     }
 }

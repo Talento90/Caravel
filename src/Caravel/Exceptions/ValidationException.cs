@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Caravel.Errors;
 
 namespace Caravel.Exceptions
 {
@@ -18,11 +19,6 @@ namespace Caravel.Exceptions
         public ValidationException(Error error, IDictionary<string, string[]> errors, Exception? innerException = null) : base(error, innerException)
         {
             Errors = errors ?? new Dictionary<string, string[]>();;
-        }
-
-        public ValidationException(Error error, string message) : base(error, message)
-        {
-            Errors = new Dictionary<string, string[]>();
         }
     }
 }

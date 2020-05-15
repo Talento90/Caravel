@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Net;
 using Caravel.AspNetCore.Http;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -28,7 +29,7 @@ namespace Caravel.AspNetCore.Filters
                 var httpError = new HttpError(
                         filterContext.HttpContext,
                         HttpStatusCode.BadRequest,
-                        new ValidationException(Errors.FieldsValidation, errors)
+                        new Error("fields_validation", "Payload contain")
                     )
                     .SetErrors(errors);
 

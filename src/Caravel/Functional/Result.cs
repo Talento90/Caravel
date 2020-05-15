@@ -1,3 +1,4 @@
+using Caravel.Errors;
 using Caravel.Exceptions;
 
 namespace Caravel.Functional

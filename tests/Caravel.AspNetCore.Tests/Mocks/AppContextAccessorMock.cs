@@ -1,7 +1,7 @@
 using System;
 using Caravel.AppContext;
 
-namespace Caravel.Tests.Mocks
+namespace Caravel.AspNetCore.Tests.Mocks
 {
     public class AppContextAccessorMock : IAppContextAccessor
     {

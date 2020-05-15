@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Caravel.Tests.AspNetCore.Middleware
+namespace Caravel.AspNetCore.Tests.Middleware
 {
     public class ExceptionMiddlewareTests
     {
@@ -72,7 +73,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             //Assert
             Assert.NotNull(httpError);
-            Assert.Equal(Errors.Error.Message, httpError.Detail);
+            Assert.Equal("Internal error server.", httpError.Title);
             Assert.Equal((int) HttpStatusCode.InternalServerError, httpError.Status);
         }
 
@@ -81,7 +82,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new NotFoundException(Errors.NotFound),
+                (innerHttpContext) => throw new NotFoundException(new Error("user_not_found", "User not found")),
                 new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
@@ -93,12 +94,12 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             var reader = new StreamReader(context.Response.Body);
-            var streamText = reader.ReadToEnd();
+            var streamText = await reader.ReadToEndAsync();
             var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
 
             //Assert
             Assert.NotNull(httpError);
-            Assert.Equal(Errors.NotFound.Message, httpError.Detail);
+            Assert.Equal("User not found", httpError.Title);
             Assert.Equal((int) HttpStatusCode.NotFound, httpError.Status);
         }
 
@@ -107,7 +108,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new ValidationException(Errors.Validation),
+                (innerHttpContext) => throw new ValidationException(new Error("validation", "invalid field")),
                 new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
@@ -124,62 +125,8 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             //Assert
             Assert.NotNull(httpError);
-            Assert.Equal(Errors.Validation.Message, httpError.Detail);
+            Assert.Equal("invalid field", httpError.Title);
             Assert.Equal((int) HttpStatusCode.BadRequest, httpError.Status);
-        }
-
-        [Fact]
-        public async Task Should_Handle_Operation_Cancelled_Exception_Exception()
-        {
-            // Arrange
-            var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new OperationCancelledException(Errors.OperationWasCancelled),
-                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
-            );
-
-            var context = new DefaultHttpContext();
-            context.Response.Body = new MemoryStream();
-
-            //Act
-            await middleware.Invoke(context);
-
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
-            var reader = new StreamReader(context.Response.Body);
-            var streamText = reader.ReadToEnd();
-            var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
-
-            //Assert
-            Assert.NotNull(httpError);
-            Assert.Equal(Errors.OperationWasCancelled.Message, httpError.Detail);
-            Assert.Equal((int) HttpStatusCode.Accepted, httpError.Status);
-        }
-
-        [Fact]
-        public async Task Should_Handle_System_Operation_Cancelled_Exception_Exception()
-        {
-            // Arrange
-            const string errorMessage = "Operation was cancelled";
-
-            var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new OperationCanceledException(errorMessage),
-                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
-            );
-
-            var context = new DefaultHttpContext();
-            context.Response.Body = new MemoryStream();
-
-            //Act
-            await middleware.Invoke(context);
-
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
-            var reader = new StreamReader(context.Response.Body);
-            var streamText = reader.ReadToEnd();
-            var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
-
-            //Assert
-            Assert.NotNull(httpError);
-            Assert.Equal(Errors.OperationWasCancelled.Message, httpError.Detail);
-            Assert.Equal((int) HttpStatusCode.Accepted, httpError.Status);
         }
 
         [Fact]
@@ -187,7 +134,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new UnauthorizedException(Errors.Unauthorized),
+                (innerHttpContext) => throw new UnauthorizedException(new Error("unauthorized", "not logged in")),
                 new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
@@ -204,7 +151,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             //Assert
             Assert.NotNull(httpError);
-            Assert.Equal(Errors.Unauthorized.Message, httpError.Detail);
+            Assert.Equal("not logged in", httpError.Title);
             Assert.Equal((int) HttpStatusCode.Unauthorized, httpError.Status);
         }
 
@@ -214,7 +161,7 @@ namespace Caravel.Tests.AspNetCore.Middleware
         {
             // Arrange
             var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new PermissionException(Errors.Permission),
+                (innerHttpContext) => throw new PermissionException(new Error("permission", "no permissions")),
                 new LoggerFactory().CreateLogger<ExceptionMiddleware>()
             );
 
@@ -231,36 +178,8 @@ namespace Caravel.Tests.AspNetCore.Middleware
 
             //Assert
             Assert.NotNull(httpError);
-            Assert.Equal(Errors.Permission.Message, httpError.Detail);
+            Assert.Equal("no permissions", httpError.Title);
             Assert.Equal((int) HttpStatusCode.Forbidden, httpError.Status);
-        }
-
-
-        [Fact]
-        public async Task Should_Handle_Invalid_Operation_Exception()
-        {
-            // Arrange
-            const string errorMessage = "User cannot perform this action";
-            var middleware = new ExceptionMiddleware(
-                (innerHttpContext) => throw new InvalidOperationException(errorMessage),
-                new LoggerFactory().CreateLogger<ExceptionMiddleware>()
-            );
-
-            var context = new DefaultHttpContext();
-            context.Response.Body = new MemoryStream();
-
-            //Act
-            await middleware.Invoke(context);
-
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
-            var reader = new StreamReader(context.Response.Body);
-            var streamText = reader.ReadToEnd();
-            var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
-
-            //Assert
-            Assert.NotNull(httpError);
-            Assert.Equal(Errors.InvalidOperation.Message, httpError.Detail);
-            Assert.Equal((int) HttpStatusCode.BadRequest, httpError.Status);
         }
     }
 }
