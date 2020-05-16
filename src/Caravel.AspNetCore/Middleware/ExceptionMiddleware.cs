@@ -56,13 +56,13 @@ namespace Caravel.AspNetCore.Middleware
 
         protected virtual HttpError HandleException(HttpContext context, Exception ex)
         {
-            return ex switch
+             return ex switch
             {
-                NotFoundException e => new HttpError(context, HttpStatusCode.NotFound, new Error("not_found", "The resource does not exists.")),
-                UnauthorizedException e => new HttpError(context, HttpStatusCode.Unauthorized, new Error("unauthorized", "User is not authenticated.")),
-                PermissionException e => new HttpError(context, HttpStatusCode.Forbidden, new Error("permission", "Insufficient permissions to execute the operation.")),
-                ValidationException e => new HttpError(context, HttpStatusCode.BadRequest, new Error("validation", "Validation error.")).SetErrors(e.Errors),
-                ConflictException e => new HttpError(context, HttpStatusCode.Conflict, new Error("conflict",  "Conflict executing the operation.")),
+                NotFoundException e => new HttpError(context, HttpStatusCode.NotFound, new Error(e.Error.Code, e.Error.Message)),
+                UnauthorizedException e => new HttpError(context, HttpStatusCode.Unauthorized, new Error(e.Error.Code, e.Error.Message)),
+                PermissionException e => new HttpError(context, HttpStatusCode.Forbidden, new Error(e.Error.Code, e.Error.Message)),
+                ValidationException e => new HttpError(context, HttpStatusCode.BadRequest, new Error(e.Error.Code, e.Error.Message)).SetErrors(e.Errors),
+                ConflictException e => new HttpError(context, HttpStatusCode.Conflict, new Error(e.Error.Code, e.Error.Message)),
                 _ => new HttpError(context, HttpStatusCode.InternalServerError, new Error("internal", "Internal error server."))
             };
         }

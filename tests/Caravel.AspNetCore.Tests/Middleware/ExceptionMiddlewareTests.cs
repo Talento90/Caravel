@@ -125,6 +125,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             Assert.NotNull(httpError);
+            Assert.Equal("validation", httpError.Code);
             Assert.Equal("invalid field", httpError.Title);
             Assert.Equal((int) HttpStatusCode.BadRequest, httpError.Status);
         }
@@ -151,6 +152,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             Assert.NotNull(httpError);
+            Assert.Equal("unauthorized", httpError.Code);
             Assert.Equal("not logged in", httpError.Title);
             Assert.Equal((int) HttpStatusCode.Unauthorized, httpError.Status);
         }
