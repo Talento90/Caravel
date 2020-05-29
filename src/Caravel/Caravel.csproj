@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Caravel</RootNamespace>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.7.0</PackageVersion>
+        <PackageVersion>0.8.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk</PackageTags>
         <LangVersion>8</LangVersion>

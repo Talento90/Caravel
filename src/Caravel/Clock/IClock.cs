@@ -12,5 +12,11 @@ namespace Caravel.Clock
         /// </summary>
         /// <returns>DateTime.UtcNow</returns>
         DateTime NowUtc();
+        
+        /// <summary>
+        /// This method gets the current DateTimeOffset in UTC.
+        /// </summary>
+        /// <returns></returns>
+        DateTimeOffset NowOffsetUtc();
     }
 }

@@ -25,6 +25,16 @@ namespace Caravel.AspNetCore.Http
         }
         
         /// <summary>
+        /// Get the current user id.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Return the current user id or null if does not exists.</returns>
+        public static string? Username(this ClaimsPrincipal user)
+        {
+            return user?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value;;
+        }
+        
+        /// <summary>
         /// Write JSON to the HttpResponse using the <see cref="JsonSerializerOptions"/>.
         /// </summary>
         /// <param name="response"></param>
