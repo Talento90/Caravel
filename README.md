@@ -57,6 +57,28 @@ client.PostJsonAsync("api/v1/books", createBook, cancellationToken);
 var json = JsonSerializer.Serialize(obj, JsonSerializerOptions.CamelCase());
 ```
 
+* Functional
+
+Optional - Avoid Nulls using Optional Types
+```c#
+Optional<Product> result = await service.GetProductAsync(id);
+
+return result switch {
+            Some<Product> p => Ok(p),
+            _ => NotFound()
+        };
+```
+
+Either - Improve your error handling by using Either<Error,Success>
+
+```c#
+Either.Right<Error, Product> result = await service.GetProductAsync(id);
+
+return result.Fold(
+    (e) => new HttpError(e.Message),
+    (product) => Ok(product));
+```
+
 
 ### Caravel.AspNetCore
 
