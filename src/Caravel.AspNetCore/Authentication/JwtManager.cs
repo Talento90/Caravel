@@ -22,7 +22,7 @@ namespace Caravel.AspNetCore.Authentication
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public AccessToken GenerateAccessToken(string id, string username, string[] roles = default)
+        public AccessToken GenerateAccessToken(string id, string username, string[] roles)
         {
             var identity = new ClaimsIdentity(new GenericIdentity(username, "Token"), new[]
             {

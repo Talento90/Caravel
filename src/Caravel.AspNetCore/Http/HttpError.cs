@@ -21,11 +21,9 @@ namespace Caravel.AspNetCore.Http
         /// <summary>
         /// Error code must a well known code in the <see cref="Errors"/> class.
         /// </summary>
-        public string Code { get; set; }
-        
-        public HttpError()
-        {
-        }
+        public string Code { get; set; } = null!;
+
+        public HttpError() { }
         
         public HttpError(HttpContext context, HttpStatusCode code, Error error)
         {
