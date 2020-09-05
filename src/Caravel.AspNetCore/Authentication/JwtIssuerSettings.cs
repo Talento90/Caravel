@@ -1,0 +1,20 @@
+namespace Caravel.AspNetCore.Authentication
+{
+    public sealed class JwtIssuerSettings
+    {
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public int ExpirationInMinutes { get; set; }
+        public string IssuerSigningKey { get; set; }
+        
+        public JwtIssuerSettings() { }
+
+        public JwtIssuerSettings(string issuer, string audience, string issuerSigningKey, int expirationInMinutes)
+        {
+            Issuer = issuer;
+            Audience = audience;
+            ExpirationInMinutes = expirationInMinutes;
+            IssuerSigningKey = issuerSigningKey;
+        }
+    }
+}

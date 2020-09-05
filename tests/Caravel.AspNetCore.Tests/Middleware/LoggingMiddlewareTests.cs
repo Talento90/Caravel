@@ -29,7 +29,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var options = Options.Create(new LoggingOptions());
+            var options = Options.Create(new LoggingSettings());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
@@ -73,7 +73,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var options = Options.Create(new LoggingOptions());
+            var options = Options.Create(new LoggingSettings());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
@@ -119,7 +119,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var options = Options.Create(new LoggingOptions());
+            var options = Options.Create(new LoggingSettings());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,
@@ -144,7 +144,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var options = Options.Create(new LoggingOptions()
+            var options = Options.Create(new LoggingSettings()
             {
                 PathsToRedact = new[] {"/api/v1/profile/password"}
             });
@@ -182,7 +182,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             // Arrange
             var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
 
-            var options = Options.Create(new LoggingOptions());
+            var options = Options.Create(new LoggingSettings());
             var middleware = new LoggingMiddleware(
                 (innerHttpContext) => Task.CompletedTask,
                 loggerMock.Object,

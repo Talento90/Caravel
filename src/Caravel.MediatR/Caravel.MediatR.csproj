@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,13 +6,13 @@
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.9.0</PackageVersion>
+        <PackageVersion>0.1.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
-        <PackageTags>dotnetcore,sdk</PackageTags>
+        <PackageTags>dotnetcore,sdk,mediatr</PackageTags>
         <LangVersion>8</LangVersion>
-        <Title>Caravel.AspNetCore</Title>
+        <Title>Caravel.MediatR</Title>
         <Authors>Marco Talento</Authors>
-        <Description>Caravel.AspNetCore is a package that contains common utilities for building asp.net core applications.</Description>
+        <Description>Caravel.MediatR is a package that contains reusable behaviours (validation, authorization, logging).</Description>
         <PackageProjectUrl>https://github.com/Talento90/Caravel</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicenseUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIconUrl>
@@ -23,8 +23,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.5.0" />
+      <PackageReference Include="FluentValidation" Version="9.2.0" />
+      <PackageReference Include="MediatR" Version="8.1.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
     </ItemGroup>
-    
+
 </Project>

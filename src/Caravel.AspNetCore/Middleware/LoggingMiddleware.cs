@@ -14,29 +14,29 @@ namespace Caravel.AspNetCore.Middleware
 {
     /// <summary>
     /// LoggingMiddleware logs the HTTP request and responses.
-    /// Check the <see cref="LoggingOptions"/> to configure the logging.
+    /// Check the <see cref="LoggingSettings"/> to configure the logging.
     /// </summary>
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingMiddleware> _logger;
-        private readonly LoggingOptions _options;
+        private readonly LoggingSettings _settings;
         private readonly IAppContextAccessor _contextAccessor;
         
         public LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> logger,
-            IOptions<LoggingOptions> options, IAppContextAccessor contextAccessor)
+            IOptions<LoggingSettings> options, IAppContextAccessor contextAccessor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
-            _options = options == null ? new LoggingOptions() : options.Value;
+            _settings = options == null ? new LoggingSettings() : options.Value;
         }
 
         public async Task Invoke(HttpContext context)
         {
             var request = context.Request;
 
-            if (_options.PathsToIgnore.Any(p => request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
+            if (_settings.PathsToIgnore.Any(p => request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
             {
                 await _next(context);
                 return;
@@ -51,7 +51,7 @@ namespace Caravel.AspNetCore.Middleware
 
                 var start = Stopwatch.StartNew();
 
-                if (_options.EnableLogBody)
+                if (_settings.EnableLogBody)
                 {
                     var originalBodyStream = context.Response.Body;
 
@@ -88,14 +88,14 @@ namespace Caravel.AspNetCore.Middleware
             var body = string.Empty;
             var headers = request.Headers.Where(h => h.Key != "Authorization");
 
-            if (_options.HeadersToLog.Any())
+            if (_settings.HeadersToLog.Any())
             {
-                headers = headers.Where(h => _options.HeadersToLog.Contains(h.Key));
+                headers = headers.Where(h => _settings.HeadersToLog.Contains(h.Key));
             }
 
             var containsFiles = request.HasFormContentType && request.Form.Files.Any();
 
-            if (!containsFiles && _options.EnableLogBody)
+            if (!containsFiles && _settings.EnableLogBody)
             {
                 body = await ReadBodyAsync(request.Body);
             }
@@ -154,6 +154,6 @@ namespace Caravel.AspNetCore.Middleware
         }
 
         private bool ShouldRedactBody(HttpRequest request)
-            => _options.PathsToRedact.Any(p => request.Path.Value.ToLower().StartsWith(p));
+            => _settings.PathsToRedact.Any(p => request.Path.Value.ToLower().StartsWith(p));
     }
 }

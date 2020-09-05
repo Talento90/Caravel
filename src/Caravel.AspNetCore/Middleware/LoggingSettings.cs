@@ -6,7 +6,7 @@ using System.Linq;
      /// <summary>
      /// LoggingOptions is used to configure the <see cref="LoggingMiddleware"/>.
      /// </summary>
-     public class LoggingOptions
+     public class LoggingSettings
      {
          /// <summary>
          /// Headers to log. Default: "Content-Type", "User-Agent"
@@ -28,7 +28,7 @@ using System.Linq;
          /// </summary>
          public bool EnableLogBody { get; set; }
  
-         public LoggingOptions()
+         public LoggingSettings()
          {
              PathsToIgnore = new[] {"/docs", "/swagger", "/health", "/api/version"};
              PathsToRedact = Enumerable.Empty<string>();

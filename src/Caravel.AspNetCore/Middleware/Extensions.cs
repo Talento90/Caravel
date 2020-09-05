@@ -26,7 +26,7 @@ namespace Caravel.AspNetCore.Middleware
         /// <returns></returns>
         public static IApplicationBuilder UseLogging(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingOptions()));
+            return builder.UseMiddleware<LoggingMiddleware>(Options.Create(new LoggingSettings()));
         }
         
         /// <summary>
@@ -36,7 +36,7 @@ namespace Caravel.AspNetCore.Middleware
         /// <returns></returns>
         public static IApplicationBuilder UseTraceId(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<TraceIdMiddleware>(Options.Create(new TraceIdOptions()));
+            return builder.UseMiddleware<TraceIdMiddleware>(Options.Create(new TraceIdSettings()));
         }
         
         /// <summary>

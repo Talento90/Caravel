@@ -15,26 +15,26 @@ namespace Caravel.AspNetCore.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly IAppContextAccessor _contextAccessor;
-        private readonly TraceIdOptions _options;
+        private readonly TraceIdSettings _settings;
 
-        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdOptions> options, IAppContextAccessor contextAccessor)
+        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdSettings> options, IAppContextAccessor contextAccessor)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
-            _options = options == null ? new TraceIdOptions() : options.Value;
+            _settings = options == null ? new TraceIdSettings() : options.Value;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            context.TraceIdentifier = context.Request.Headers.ContainsKey(_options.Header)
-                ? context.Request.Headers[_options.Header].ToString()
+            context.TraceIdentifier = context.Request.Headers.ContainsKey(_settings.Header)
+                ? context.Request.Headers[_settings.Header].ToString()
                 : Guid.NewGuid().ToString();
 
-            if (_options.IncludeInResponse)
+            if (_settings.IncludeInResponse)
             {
                 context.Response.OnStarting(() =>
                 {
-                    context.Response.Headers.TryAdd(_options.Header, new[] {context.TraceIdentifier});
+                    context.Response.Headers.TryAdd(_settings.Header, new[] {context.TraceIdentifier});
 
                     return Task.CompletedTask;
                 });

@@ -16,7 +16,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
         {
             // Arrange
             var appContext = new AppContextAccessorMock();
-            var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdOptions()),  appContext);
+            var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdSettings()),  appContext);
             var httpContext = new DefaultHttpContext();
             //Act
             await middleware.Invoke(httpContext);
@@ -30,11 +30,11 @@ namespace Caravel.AspNetCore.Tests.Middleware
         {
             // Arrange
             var appContext = new AppContextAccessorMock();
-            var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdOptions()), appContext);
+            var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdSettings()), appContext);
             var context = new DefaultHttpContext();
 
             context.Request.Headers.Add(
-                new KeyValuePair<string, StringValues>(TraceIdOptions.DefaultHeader, appContext.Context.TraceId)
+                new KeyValuePair<string, StringValues>(TraceIdSettings.DefaultHeader, appContext.Context.TraceId)
             );
 
             //Act
