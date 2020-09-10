@@ -211,5 +211,79 @@ namespace Caravel.AspNetCore.Tests.Middleware
                 Times.Exactly(2)
             );
         }
+
+        [Fact]
+        public async Task Should_Redact_Dynamic_Paths()
+        {
+            // Arrange
+            var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
+            var options = Options.Create(new LoggingSettings
+            {
+                PathsToRedact = new[] {"/api/v1/devices/{*}/activate"}
+            });
+
+            var middleware = new LoggingMiddleware(
+                (innerHttpContext) => Task.CompletedTask,
+                loggerMock.Object,
+                options,
+                new AppContextAccessorMock()
+            );
+
+            var context = CreateHttpContext();
+
+            context.Request.Path = "/api/v1/devices/guid-identifier/activate";
+
+            //Act
+            await middleware.Invoke(context);
+
+            //Assert
+            loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
+
+            loggerMock.Verify(l => l.Log(
+                    LogLevel.Information,
+                    0,
+                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).Contains("[redacted]")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task Should_Redact_Dynamic_Multiple_Paths()
+        {
+            // Arrange
+            var loggerMock = new Mock<ILogger<LoggingMiddleware>>();
+            var options = Options.Create(new LoggingSettings
+            {
+                PathsToRedact = new[] {"/api/v1/devices/{*}/activate/{*}"}
+            });
+
+            var middleware = new LoggingMiddleware(
+                (innerHttpContext) => Task.CompletedTask,
+                loggerMock.Object,
+                options,
+                new AppContextAccessorMock()
+            );
+
+            var context = CreateHttpContext();
+
+            context.Request.Path = "/api/v1/devices/guid-identifier/activate/{another-guid}";
+
+            //Act
+            await middleware.Invoke(context);
+
+            //Assert
+            loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
+
+            loggerMock.Verify(l => l.Log(
+                    LogLevel.Information,
+                    0,
+                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).Contains("[redacted]")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
+                Times.Once
+            );
+        }
     }
 }

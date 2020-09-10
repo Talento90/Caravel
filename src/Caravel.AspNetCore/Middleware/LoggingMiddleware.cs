@@ -18,6 +18,8 @@ namespace Caravel.AspNetCore.Middleware
     /// </summary>
     public class LoggingMiddleware
     {
+        private const string DynamicPath = "{*}";
+
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingMiddleware> _logger;
         private readonly LoggingSettings _settings;
@@ -154,6 +156,23 @@ namespace Caravel.AspNetCore.Middleware
         }
 
         private bool ShouldRedactBody(HttpRequest request)
-            => _settings.PathsToRedact.Any(p => request.Path.Value.ToLower().StartsWith(p));
+        {
+            foreach (var redactPath in _settings.PathsToRedact)
+            {
+                var normalizePath = request.Path.Value.ToLower();
+                var isDynamicPath = redactPath.Contains(DynamicPath);
+
+                if (!isDynamicPath)
+                {
+                    return normalizePath.StartsWith(redactPath);
+                }
+                
+                var dynamicParts = redactPath.Split(DynamicPath);
+                
+                return dynamicParts.All(d => normalizePath.Contains(d));
+            }
+
+            return false;
+        }
     }
 }
