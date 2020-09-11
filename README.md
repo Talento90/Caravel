@@ -1,6 +1,6 @@
 # Caravel ![](https://github.com/Talento90/Caravel/workflows/Publish/badge.svg)
 
-<img src="https://github.com/Talento90/Caravel/blob/master/assets/logo.svg" width="200">
+<img src="https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.svg" width="200">
 
 Caravel is a SDK to help developers building .NET applications.
 
