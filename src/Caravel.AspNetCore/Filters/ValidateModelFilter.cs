@@ -29,7 +29,7 @@ namespace Caravel.AspNetCore.Filters
                 var httpError = new HttpError(
                         filterContext.HttpContext,
                         HttpStatusCode.BadRequest,
-                        new Error("fields_validation", "Payload contain")
+                        new Error("invalid_fields", "Payload contains invalid fields.")
                     )
                     .SetErrors(errors);
 
