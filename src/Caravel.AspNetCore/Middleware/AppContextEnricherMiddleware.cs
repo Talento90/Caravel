@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Caravel.AppContext;
@@ -26,10 +27,15 @@ namespace Caravel.AspNetCore.Middleware
         public async Task Invoke(HttpContext context)
         {
             _contextAccessor.Context = new AppContext.AppContext(context.TraceIdentifier, context.User.Id());
-
+            
             foreach (var claim in _settings.Claims)
             {
-                _contextAccessor.Context.Data.Add(claim.Type, claim.Value);
+                var jwtClaim = context.User?.Claims?.FirstOrDefault(c => c.Type == claim);
+
+                if (jwtClaim != null)
+                {
+                    _contextAccessor.Context.Data.Add(jwtClaim.Type, jwtClaim.Value);
+                }
             }
 
             await _next(context);

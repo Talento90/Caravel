@@ -11,11 +11,11 @@ namespace Caravel.AspNetCore.Middleware
         /// <summary>
         /// List of claims to inject in <see cref="AppContext"/> Data.
         /// </summary>
-        public IEnumerable<Claim> Claims { get; set; }
+        public IEnumerable<string> Claims { get; set; }
 
         public AppContextEnricherSettings()
         {
-            Claims = new List<Claim>();
+            Claims = new List<string>();
         }
     }
 }
