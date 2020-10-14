@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -22,17 +24,16 @@ namespace Caravel.AspNetCore.Authentication
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public AccessToken GenerateAccessToken(string id, string username, string[] roles)
+        public AccessToken GenerateAccessToken(string id, string username, IEnumerable<Claim> claims)
         {
-            var identity = new ClaimsIdentity(new GenericIdentity(username, "Token"), new[]
+            var identity = new ClaimsIdentity(new GenericIdentity(username, "Token"), new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, id),
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, _clock.NowOffsetUtc().ToUnixTimeSeconds().ToString(),
-                    ClaimValueTypes.Integer64),
-                new Claim(JwtClaimIdentifiers.Roles, string.Join(",", roles ?? new[] {string.Empty}))
-            });
+                    ClaimValueTypes.Integer64)
+            }.Concat(claims));
             
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.IssuerSigningKey));
 
