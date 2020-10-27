@@ -29,10 +29,16 @@ namespace Caravel.AspNetCore.Http
         /// </summary>
         /// <param name="user"></param>
         /// <returns>Return the current user id or null if does not exists.</returns>
-        public static string? Username(this ClaimsPrincipal user)
+        public static Guid? TenantId(this ClaimsPrincipal user)
         {
-            return user?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value;;
+            var tenantId = user?.Claims?.FirstOrDefault(c => c.Type == "tenantId")?.Value;
+
+            if (Guid.TryParse(tenantId, out var result))
+                return result;
+
+            return null;
         }
+        
         
         /// <summary>
         /// Write JSON to the HttpResponse using the <see cref="JsonSerializerOptions"/>.

@@ -17,7 +17,7 @@ namespace Caravel.AppContext
         /// </summary>
         public AppContext Context
         {
-            get => AppContextCurrent?.Value?.Context ?? new AppContext(string.Empty, Guid.Empty);
+            get => AppContextCurrent?.Value?.Context ?? new AppContext(string.Empty);
             set
             {
                 var holder = AppContextCurrent.Value;

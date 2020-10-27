@@ -9,12 +9,12 @@ namespace Caravel.AspNetCore.Tests.Mocks
 
         public AppContextAccessorMock()
         {
-            Context = new AppContext.AppContext(Guid.NewGuid().ToString(), Guid.NewGuid());
+            Context = new AppContext.AppContext(Guid.NewGuid().ToString(), Guid.NewGuid(),Guid.NewGuid());
         }
         
-        public AppContextAccessorMock(string traceId, Guid uid)
+        public AppContextAccessorMock(string traceId, Guid uid, Guid tenantId)
         {
-            Context = new AppContext.AppContext(traceId, uid);
+            Context = new AppContext.AppContext(traceId, uid, tenantId);
         }
     }
 }

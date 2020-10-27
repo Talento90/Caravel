@@ -46,8 +46,9 @@ namespace Caravel.AspNetCore.Middleware
 
             var traceId = _contextAccessor.Context.TraceId;
             var uid = _contextAccessor.Context.UserId;
+            var tenantId = _contextAccessor.Context.TenantId;
 
-            using (_logger.BeginScope("{traceId} {uid}", traceId, uid))
+            using (_logger.BeginScope("{traceId} {uid} {tenantId}", traceId, uid, tenantId))
             {
                 await LogRequest(request);
 

@@ -13,6 +13,10 @@ namespace Caravel.AppContext
         /// </summary>
         public Guid? UserId { get; }
         /// <summary>
+        /// Get the tenant id. This field is useful for multi tenant applications/
+        /// </summary>
+        public Guid? TenantId { get; }
+        /// <summary>
         /// Get the current trace id. 
         /// </summary>
         public string TraceId { get; }
@@ -21,9 +25,10 @@ namespace Caravel.AppContext
         /// </summary>
         public IDictionary<string, object> Data { get; }
 
-        public AppContext(string traceId, Guid? userId)
+        public AppContext(string traceId, Guid? userId = default, Guid? tenantId = default)
         {
             UserId = userId;
+            TenantId = tenantId;
             TraceId = traceId;
             Data = new Dictionary<string, object>();
         }

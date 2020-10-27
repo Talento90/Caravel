@@ -5,7 +5,7 @@ namespace Caravel.AspNetCore.Middleware
     /// </summary>
     public class TraceIdSettings
     {
-        public const string DefaultHeader = "X-Trace-ID";
+        public const string DefaultHeader = "X-Trace-Id";
 
         /// <summary>
         /// The header field name where the Trace Id will be stored

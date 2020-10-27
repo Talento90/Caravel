@@ -26,7 +26,10 @@ namespace Caravel.AspNetCore.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            _contextAccessor.Context = new AppContext.AppContext(context.TraceIdentifier, context.User.Id());
+            _contextAccessor.Context = new AppContext.AppContext(
+                context.TraceIdentifier,
+                context.User.Id(),
+                context.User.TenantId());
             
             foreach (var claim in _settings.Claims)
             {

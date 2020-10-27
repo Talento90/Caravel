@@ -12,7 +12,7 @@ This project is split in 2 different packages:
 
 This package does not have any external dependency and it brings all basic utilities that every application should handle such as application context or exceptions.
 
-* Application context (UserId, TraceId)
+* Application context (UserId, TraceId, TenantId)
 
 ```c#
 //Inject IAppContextAccessor on constructor.
@@ -23,6 +23,9 @@ AppContext context = contextAccessor.Context;
 
 //Get UserId of the current user.
 context.UserId;
+
+//Get TenantId of the current tenant. It is useful when dealing with multitenant applications.
+context.TenantId;
 
 //Get TraceId of the current execution.
 context.TraceId;
