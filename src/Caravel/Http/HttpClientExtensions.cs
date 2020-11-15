@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -109,7 +110,7 @@ namespace Caravel.Http
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
         {
             var json = await content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions.CamelCase());
+            return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions.CamelCase()) ?? throw new InvalidOperationException();
         }
 
         /// <summary>

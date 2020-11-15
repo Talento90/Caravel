@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -11,7 +12,7 @@ namespace Caravel.Http
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
         {
-            return DateTime.Parse(reader.GetString()).ToUniversalTime();
+            return DateTime.Parse(reader.GetString() ?? throw new NoNullAllowedException()).ToUniversalTime();
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, System.Text.Json.JsonSerializerOptions options)
