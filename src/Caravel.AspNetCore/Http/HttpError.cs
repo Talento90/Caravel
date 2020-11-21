@@ -43,7 +43,7 @@ namespace Caravel.AspNetCore.Http
         /// <returns></returns>
         public HttpError SetErrors(IDictionary<string, string[]> errors)
         {
-            if (errors != null && errors.Any())
+            if (errors.Any())
             {
                 Extensions["errors"] = errors;    
             }

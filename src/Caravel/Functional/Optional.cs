@@ -1,6 +1,6 @@
 namespace Caravel.Functional
 {
-    public abstract class Optional<T>
+    public abstract record Optional<T>
     {
         private readonly T _value;
         private readonly bool _hasValue;

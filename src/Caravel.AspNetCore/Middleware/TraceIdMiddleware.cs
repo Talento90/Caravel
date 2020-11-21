@@ -21,7 +21,7 @@ namespace Caravel.AspNetCore.Middleware
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
-            _settings = options == null ? new TraceIdSettings() : options.Value;
+            _settings = options.Value;
         }
 
         public async Task Invoke(HttpContext context)

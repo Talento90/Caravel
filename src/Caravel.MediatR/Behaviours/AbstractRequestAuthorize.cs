@@ -10,9 +10,6 @@ namespace Caravel.MediatR.Behaviours
 
         protected void UseRequirement(IAuthorizationRequirement requirement)
         {
-            if (requirement == null) 
-                return;
-
             _requirements.Add(requirement);
         }
 

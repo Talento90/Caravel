@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Caravel.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Http
@@ -16,7 +17,7 @@ namespace Caravel.AspNetCore.Http
         /// <returns>Return the current user id or null if does not exists.</returns>
         public static Guid? Id(this ClaimsPrincipal user)
         {
-            var uid = user?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var uid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (Guid.TryParse(uid, out var result))
                 return result;
@@ -31,7 +32,7 @@ namespace Caravel.AspNetCore.Http
         /// <returns>Return the current user id or null if does not exists.</returns>
         public static Guid? TenantId(this ClaimsPrincipal user)
         {
-            var tenantId = user?.Claims?.FirstOrDefault(c => c.Type == "tenantId")?.Value;
+            var tenantId = user.Claims.FirstOrDefault(c => c.Type == JwtClaimIdentifiers.TenantId)?.Value;
 
             if (Guid.TryParse(tenantId, out var result))
                 return result;

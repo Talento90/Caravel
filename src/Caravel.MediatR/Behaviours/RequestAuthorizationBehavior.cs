@@ -34,7 +34,7 @@ namespace Caravel.MediatR.Behaviours
                 var result = await _mediator.Send(requirement, cancellationToken);
                 
                 if (!result.IsAuthorized)
-                    throw new UnauthorizedException(new Error("unauthorized", result.FailureMessage));
+                    throw new UnauthorizedException(new Error("unauthorized", result.FailureMessage ?? "User is unauthorized."));
             }
 
             return await next();

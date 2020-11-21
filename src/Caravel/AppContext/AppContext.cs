@@ -6,7 +6,7 @@ namespace Caravel.AppContext
     /// <summary>
     /// Encapsulates all Application specific information about an individual operation.
     /// </summary>
-    public class AppContext
+    public record AppContext
     {
         /// <summary>
         /// Get the current user id.
@@ -20,17 +20,13 @@ namespace Caravel.AppContext
         /// Get the current trace id. 
         /// </summary>
         public string TraceId { get; }
+
         /// <summary>
         /// Get a dictionary that contains request related data. 
         /// </summary>
-        public IDictionary<string, object> Data { get; }
+        public Dictionary<string, object> Data { get; } = new();
 
-        public AppContext(string traceId, Guid? userId = default, Guid? tenantId = default)
-        {
-            UserId = userId;
-            TenantId = tenantId;
-            TraceId = traceId;
-            Data = new Dictionary<string, object>();
-        }
+        public AppContext(string traceId, Guid? userId = default, Guid? tenantId = default) =>
+            (TraceId, UserId, TenantId) = (traceId, userId, tenantId);
     }
 }

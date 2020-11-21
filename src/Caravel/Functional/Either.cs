@@ -1,12 +1,12 @@
 namespace Caravel.Functional
 {
-    public abstract class Either<TLeft, TRight>
+    public abstract record Either<TLeft, TRight>
     {
         private Either()
         {
         }
 
-        public sealed class Left : Either<TLeft, TRight>
+        public sealed record Left : Either<TLeft, TRight>
         {
             public Left(TLeft value)
             {
@@ -16,7 +16,7 @@ namespace Caravel.Functional
             public TLeft Value { get; }
         }
 
-        public sealed class Right : Either<TLeft, TRight>
+        public sealed record Right : Either<TLeft, TRight>
         {
             public Right(TRight value)
             {

@@ -1,6 +1,6 @@
 namespace Caravel.Functional
 {
-    public sealed class Some<T> : Optional<T>
+    public sealed record Some<T> : Optional<T>
     {
         public T Value { get; }
 

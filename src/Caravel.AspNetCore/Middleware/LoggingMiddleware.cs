@@ -31,14 +31,14 @@ namespace Caravel.AspNetCore.Middleware
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
-            _settings = options == null ? new LoggingSettings() : options.Value;
+            _settings = options.Value;
         }
 
         public async Task Invoke(HttpContext context)
         {
             var request = context.Request;
 
-            if (_settings.PathsToIgnore.Any(p => request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
+            if (_settings.PathsToIgnore.Any(p => request.Path.Value != null && request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
             {
                 await _next(context);
                 return;
@@ -149,7 +149,7 @@ namespace Caravel.AspNetCore.Middleware
         private static async Task<string> ReadBodyAsync(Stream stream)
         {
             stream.Seek(0, SeekOrigin.Begin);
-            using var reader = new StreamReader(stream, Encoding.UTF8,detectEncodingFromByteOrderMarks: false, leaveOpen: true);
+            using var reader = new StreamReader(stream, Encoding.UTF8, false, leaveOpen: true);
             var body = await reader.ReadToEndAsync();
             stream.Seek(0, SeekOrigin.Begin);
 
@@ -160,17 +160,17 @@ namespace Caravel.AspNetCore.Middleware
         {
             foreach (var redactPath in _settings.PathsToRedact)
             {
-                var normalizePath = request.Path.Value.ToLower();
+                var normalizePath = request.Path.Value?.ToLower();
                 var isDynamicPath = redactPath.Contains(DynamicPath);
 
-                if (!isDynamicPath)
+                if (!isDynamicPath && normalizePath is not null)
                 {
                     return normalizePath.StartsWith(redactPath);
                 }
                 
                 var dynamicParts = redactPath.Split(DynamicPath);
                 
-                return dynamicParts.All(d => normalizePath.Contains(d));
+                return dynamicParts.All(d => normalizePath != null && normalizePath.Contains(d));
             }
 
             return false;

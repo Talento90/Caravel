@@ -20,7 +20,7 @@ namespace Caravel.AspNetCore.Http
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+            if (_httpContextAccessor.HttpContext != null && _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
                 request.Headers.Add("Authorization",
                     _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString());

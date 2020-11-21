@@ -21,7 +21,7 @@ namespace Caravel.AspNetCore.Middleware
         {
             _next = next;
             _contextAccessor = contextAccessor;
-            _settings = options == null ? new AppContextEnricherSettings() : options.Value;
+            _settings = options.Value;
         }
 
         public async Task Invoke(HttpContext context)

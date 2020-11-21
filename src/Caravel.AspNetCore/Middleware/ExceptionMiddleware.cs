@@ -13,7 +13,7 @@ namespace Caravel.AspNetCore.Middleware
     /// ExceptionMiddleware captures and handle all the application exceptions.
     /// It converts the exception into an <see cref="HttpError"/>.
     /// </summary>
-    public class ExceptionMiddleware
+    public sealed class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
@@ -54,7 +54,7 @@ namespace Caravel.AspNetCore.Middleware
             }
         }
 
-        protected virtual HttpError HandleException(HttpContext context, Exception ex)
+        private HttpError HandleException(HttpContext context, Exception ex)
         {
              return ex switch
             {

@@ -6,10 +6,10 @@
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.14.0</PackageVersion>
+        <PackageVersion>0.15.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk</PackageTags>
-        <LangVersion>8</LangVersion>
+        <LangVersion>9</LangVersion>
         <Title>Caravel.AspNetCore</Title>
         <Authors>Marco Talento</Authors>
         <Description>Caravel.AspNetCore is a package that contains common utilities for building asp.net core applications.</Description>

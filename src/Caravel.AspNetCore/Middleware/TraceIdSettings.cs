@@ -3,7 +3,7 @@ namespace Caravel.AspNetCore.Middleware
     /// <summary>
     /// TraceIdOptions is used to configure the <see cref="TraceIdMiddleware"/>.
     /// </summary>
-    public class TraceIdSettings
+    public sealed record TraceIdSettings
     {
         public const string DefaultHeader = "X-Trace-Id";
 

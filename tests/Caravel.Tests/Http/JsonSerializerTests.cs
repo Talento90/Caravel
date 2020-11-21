@@ -25,7 +25,7 @@ namespace Caravel.Tests.Http
             var readModel =
                 JsonSerializer.Deserialize<Data>(json, JsonSerializerOptions.CamelCase());
 
-            Assert.Equal(model.Birthday, readModel.Birthday);
+            Assert.Equal(model.Birthday, readModel!.Birthday);
         }
     }
 }

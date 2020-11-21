@@ -6,7 +6,7 @@ using System.Linq;
      /// <summary>
      /// LoggingOptions is used to configure the <see cref="LoggingMiddleware"/>.
      /// </summary>
-     public class LoggingSettings
+     public record LoggingSettings
      {
          /// <summary>
          /// Headers to log. Default: "Content-Type", "User-Agent"

@@ -28,10 +28,10 @@ namespace Caravel.AspNetCore.Authentication
         {
             var identity = new ClaimsIdentity(new GenericIdentity(username, "Token"), new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, id),
-                new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, _clock.NowOffsetUtc().ToUnixTimeSeconds().ToString(),
+                new (ClaimTypes.NameIdentifier, id),
+                new (JwtRegisteredClaimNames.Sub, username),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new (JwtRegisteredClaimNames.Iat, _clock.NowOffsetUtc().ToUnixTimeSeconds().ToString(),
                     ClaimValueTypes.Integer64)
             }.Concat(claims));
             

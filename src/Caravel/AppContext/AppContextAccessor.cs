@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 
 namespace Caravel.AppContext
@@ -8,9 +7,9 @@ namespace Caravel.AppContext
     ///
     /// This implementation is based on: https://github.com/dotnet/aspnetcore/blob/master/src/Http/Http/src/HttpContextAccessor.cs 
     /// </summary>
-    public class AppContextAccessor : IAppContextAccessor
+    public record AppContextAccessor : IAppContextAccessor
     {
-        private static readonly AsyncLocal<AppContextHolder> AppContextCurrent = new AsyncLocal<AppContextHolder>();
+        private static readonly AsyncLocal<AppContextHolder> AppContextCurrent = new();
 
         /// <summary>
         /// Gets or sets the current <see cref="AppContext"/>. Returns <see langword="null" /> if there is no active <see cref="AppContext" />.
@@ -37,7 +36,7 @@ namespace Caravel.AppContext
             }
         }
 
-        private class AppContextHolder
+        private sealed record AppContextHolder
         {
             public AppContext? Context;
         }
