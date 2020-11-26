@@ -47,24 +47,8 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Request")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Response")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation("Request*"));
+            loggerMock.VerifyLog(logger => logger.LogInformation("Response*"));
         }
 
         [Fact]
@@ -93,24 +77,8 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Request")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).StartsWith("Response")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation("Request*"));
+            loggerMock.VerifyLog(logger => logger.LogInformation("Response*"));
         }
 
         [Fact]
@@ -165,15 +133,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).Contains("[redacted]")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation("*[redacted]*"));
         }
 
         [Fact]
@@ -201,15 +161,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
             await middleware.Invoke(context);
 
             //Assert
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => !(v.ToString() ?? string.Empty).Contains("Authorization")
-                    ),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Exactly(2)
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation(It.Is<string>(message => !message.Contains("Authorization"))), Times.Exactly(2));
         }
 
         [Fact]
@@ -238,15 +190,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).Contains("[redacted]")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation("*[redacted]*"));
         }
 
         [Fact]
@@ -275,15 +219,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
 
             //Assert
             loggerMock.Verify(l => l.BeginScope(It.IsAny<It.IsAnyType>()), Times.Exactly(1));
-
-            loggerMock.Verify(l => l.Log(
-                    LogLevel.Information,
-                    0,
-                    It.Is<It.IsAnyType>((v, _) => (v.ToString() ?? string.Empty).Contains("[redacted]")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()),
-                Times.Once
-            );
+            loggerMock.VerifyLog(logger => logger.LogInformation("*[redacted]*"));
         }
     }
 }
