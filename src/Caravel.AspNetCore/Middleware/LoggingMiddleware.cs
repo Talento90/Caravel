@@ -38,7 +38,7 @@ namespace Caravel.AspNetCore.Middleware
         {
             var request = context.Request;
 
-            if (_settings.PathsToIgnore.Any(p => request.Path.Value != null && request.Path.Value.ToLower().StartsWith(p)) || request.Path == "/")
+            if (_settings.PathsToIgnore.Any(p => request.Path.Value != null && request.Path.Value.ToLower().StartsWith(p)))
             {
                 await _next(context);
                 return;
