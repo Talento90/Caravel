@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Caravel.AspNetCore.Authentication;
+using Caravel.Http;
 using Microsoft.AspNetCore.Http;
 
 namespace Caravel.AspNetCore.Http
@@ -52,7 +52,7 @@ namespace Caravel.AspNetCore.Http
         {
             response.ContentType = "application/json";
 
-            var json = JsonSerializer.Serialize(obj, Caravel.Http.JsonSerializerOptions.CamelCase());
+            var json = JsonSerializer.Serialize(obj);
 
             return response.WriteAsync(json);
         }

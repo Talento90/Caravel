@@ -1,5 +1,5 @@
 using System;
-using System.Text.Json;
+using Caravel.Http;
 using Xunit;
 using JsonSerializerOptions = Caravel.Http.JsonSerializerOptions;
 
@@ -22,8 +22,7 @@ namespace Caravel.Tests.Http
             
             var json = JsonSerializer.Serialize(model, JsonSerializerOptions.CamelCase());
 
-            var readModel =
-                JsonSerializer.Deserialize<Data>(json, JsonSerializerOptions.CamelCase());
+            var readModel = JsonSerializer.Deserialize<Data>(json, JsonSerializerOptions.CamelCase());
 
             Assert.Equal(model.Birthday, readModel!.Birthday);
         }

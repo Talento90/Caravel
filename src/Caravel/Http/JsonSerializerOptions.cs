@@ -1,28 +1,44 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+
 
 namespace Caravel.Http
 {
     public static class JsonSerializerOptions
     {
-        /// <summary>
-        /// Creates the default json configuration for Caravel applications.
-        /// </summary>
-        /// <returns></returns>
-        public static System.Text.Json.JsonSerializerOptions CamelCase()
+        public static JsonSerializerSettings CamelCase()
         {
+            return new JsonSerializerSettings()
             {
-                var options = new System.Text.Json.JsonSerializerOptions()
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                Converters = new List<JsonConverter>()
                 {
-                    IgnoreNullValues = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
-                options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                options.Converters.Add(new JsonDateTimeConverter());
-
-                return options;
-            }
+                    new StringEnumConverter(true)
+                }
+            };
+        }
+        
+        public static JsonSerializerSettings SnakeCase()
+        {
+            return new JsonSerializerSettings()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+                NullValueHandling = NullValueHandling.Ignore,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                Converters = new List<JsonConverter>()
+                {
+                    new StringEnumConverter(true)
+                }
+            };
         }
     }
 }
