@@ -6,7 +6,7 @@ Caravel is a SDK to help developers building .NET applications.
 
 ## Features
 
-This project is split in 2 different packages:
+This project is split in 3 different packages:
 
 ### Caravel
 

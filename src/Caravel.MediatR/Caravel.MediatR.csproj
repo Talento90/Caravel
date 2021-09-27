@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <OutputType>Library</OutputType>
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.6.0</PackageVersion>
+        <PackageVersion>0.7.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk,mediatr</PackageTags>
         <LangVersion>9</LangVersion>
@@ -23,9 +23,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="10.0.2" />
+      <PackageReference Include="FluentValidation" Version="10.3.3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-rc.1.21451.13" />
     </ItemGroup>
 
 </Project>
