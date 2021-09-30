@@ -1,4 +1,5 @@
 using System;
+using Caravel.MediatR.Security;
 using FluentValidation;
 using MediatR;
 
@@ -10,6 +11,7 @@ namespace Caravel.MediatR.Tests.Behaviours
         public string Data { get; set; }
     }
     
+    [Authorize(Roles = "admin", Policy = "CanRead")]
     public class GetTestDataQuery : IRequest<TestDataResponse>
     {
         public Guid Id { get; set; }
