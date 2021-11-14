@@ -5,7 +5,7 @@ namespace Caravel.Clock
     /// <summary>
     /// DateTime implementation of the IClock interface.
     /// </summary>
-    public class DateTimeClock : IClock
+    public class DateTimeUtcClock : IClock
     {
         /// <summary>
         /// This method gets the current DateTime in UTC.

@@ -10,7 +10,7 @@ namespace Caravel.Tests.Clock
         public void Should_Return_Utc_Kind()
         {
             // Arrange
-            IClock clock = new DateTimeClock();
+            IClock clock = new DateTimeUtcClock();
             
             //Act
             var nowUtc = clock.NowUtc();
