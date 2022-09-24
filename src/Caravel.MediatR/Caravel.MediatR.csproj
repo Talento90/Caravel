@@ -9,7 +9,7 @@
         <PackageVersion>0.10.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk,mediatr</PackageTags>
-        <LangVersion>11</LangVersion>
+        <LangVersion>10</LangVersion>
         <Title>Caravel.MediatR</Title>
         <Authors>Marco Talento</Authors>
         <Description>Caravel.MediatR is a package that contains reusable behaviours (validation, authorization, logging).</Description>
