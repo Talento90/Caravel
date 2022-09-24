@@ -6,7 +6,7 @@
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.19.0</PackageVersion>
+        <PackageVersion>0.20.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk</PackageTags>
         <LangVersion>10</LangVersion>
@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-rc.1.21452.15" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.12.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
     </ItemGroup>
     
 </Project>

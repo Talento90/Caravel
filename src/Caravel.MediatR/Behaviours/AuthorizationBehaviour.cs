@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Caravel.MediatR.Behaviours
 {
-    public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ApplicationContext.ApplicationContext _applicationContext;
         private readonly IAuthorizer _authorizer;
