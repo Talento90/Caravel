@@ -17,5 +17,10 @@ namespace Caravel.Entities
         }
 
         public IEnumerable<IDomainEvent> Events => _domainEvents.AsReadOnly();
+
+        public void ClearEvents()
+        {
+            _domainEvents.Clear();
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace Caravel.Http
                 NullValueHandling = NullValueHandling.Ignore,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 Converters = new List<JsonConverter>()
                 {
                     new StringEnumConverter(new CamelCaseNamingStrategy())
@@ -34,6 +35,7 @@ namespace Caravel.Http
                 NullValueHandling = NullValueHandling.Ignore,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 Converters = new List<JsonConverter>()
                 {
                     new StringEnumConverter(new SnakeCaseNamingStrategy())
