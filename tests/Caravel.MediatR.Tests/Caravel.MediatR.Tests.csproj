@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
-        <LangVersion>11</LangVersion>
+        <LangVersion>10</LangVersion>
 
         <RootNamespace>Caravel.MediatR.Tests</RootNamespace>
     </PropertyGroup>
