@@ -6,7 +6,7 @@
         <IsPackable>false</IsPackable>
 
         <Nullable>enable</Nullable>
-        <LangVersion>9</LangVersion>
+        <LangVersion>11</LangVersion>
         <RootNamespace>Caravel.Tests</RootNamespace>
     </PropertyGroup>
 

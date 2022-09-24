@@ -1,20 +1,20 @@
 using System;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 
 namespace Caravel.AspNetCore.Tests.Mocks
 {
     public class AppContextAccessorMock : IAppContextAccessor
     {
-        public AppContext.AppContext Context { get; set; }
+        public ApplicationContext.ApplicationContext Context { get; set; }
 
         public AppContextAccessorMock()
         {
-            Context = new AppContext.AppContext(Guid.NewGuid().ToString(), Guid.NewGuid(),Guid.NewGuid());
+            Context = new ApplicationContext.ApplicationContext(Guid.NewGuid().ToString(), Guid.NewGuid(),Guid.NewGuid());
         }
         
         public AppContextAccessorMock(string traceId, Guid uid, Guid tenantId)
         {
-            Context = new AppContext.AppContext(traceId, uid, tenantId);
+            Context = new ApplicationContext.ApplicationContext(traceId, uid, tenantId);
         }
     }
 }

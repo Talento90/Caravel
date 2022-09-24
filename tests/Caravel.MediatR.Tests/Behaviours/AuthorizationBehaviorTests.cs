@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.MediatR.Behaviours;
 using Caravel.MediatR.Security;
 using FluentValidation;
@@ -19,7 +19,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             var query = new GetTestDataQuery();
             var ctx = new AppContextAccessor()
             {
-                Context = new AppContext.AppContext("")
+                Context = new ApplicationContext.ApplicationContext("")
             };
             
             var mock = new Mock<IAuthorizer>();
@@ -40,7 +40,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             var query = new GetTestDataQuery();
             var ctx = new AppContextAccessor()
             {
-                Context = new AppContext.AppContext("", userId)
+                Context = new ApplicationContext.ApplicationContext("", userId)
             };
             
             var mock = new Mock<IAuthorizer>();
@@ -64,7 +64,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             var query = new GetTestDataQuery();
             var ctx = new AppContextAccessor()
             {
-                Context = new AppContext.AppContext("", userId)
+                Context = new ApplicationContext.ApplicationContext("", userId)
             };
             
             var mock = new Mock<IAuthorizer>();
@@ -88,7 +88,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             var query = new GetTestDataQuery();
             var ctx = new AppContextAccessor()
             {
-                Context = new AppContext.AppContext("", userId)
+                Context = new ApplicationContext.ApplicationContext("", userId)
             };
             
             var mock = new Mock<IAuthorizer>();

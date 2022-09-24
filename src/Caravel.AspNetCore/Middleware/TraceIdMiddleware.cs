@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -40,7 +40,7 @@ namespace Caravel.AspNetCore.Middleware
                 });
             }
 
-            _contextAccessor.Context = new AppContext.AppContext(context.TraceIdentifier, context.User.Id());
+            _contextAccessor.Context = new ApplicationContext.ApplicationContext(context.TraceIdentifier, context.User.Id());
 
             await _next(context);
         }

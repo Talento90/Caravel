@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Caravel.AspNetCore.Http;
@@ -20,10 +21,10 @@ namespace Caravel.AspNetCore.Filters
             if (!filterContext.ModelState.IsValid)
             {
                 var errors = filterContext.ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
+                    .Where(x => x.Value?.Errors.Count > 0)
                     .ToDictionary(kvp =>
                             kvp.Key,
-                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
                     );
 
                 var httpError = new HttpError(

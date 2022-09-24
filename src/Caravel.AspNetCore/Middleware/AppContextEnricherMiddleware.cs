@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 namespace Caravel.AspNetCore.Middleware
 {
     /// <summary>
-    /// AppContextEnricherMiddleware creates and set the <see cref="AppContext"/>.
-    /// This middleware is required in order to use the <see cref="AppContext"/> in the application.
+    /// AppContextEnricherMiddleware creates and set the <see cref="ApplicationContext"/>.
+    /// This middleware is required in order to use the <see cref="ApplicationContext"/> in the application.
     /// </summary>
     public class AppContextEnricherMiddleware
     {
@@ -26,7 +26,7 @@ namespace Caravel.AspNetCore.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            _contextAccessor.Context = new AppContext.AppContext(
+            _contextAccessor.Context = new ApplicationContext.ApplicationContext(
                 context.TraceIdentifier,
                 context.User.Id(),
                 context.User.TenantId());

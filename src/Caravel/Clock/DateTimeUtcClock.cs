@@ -1,28 +1,27 @@
 using System;
 
-namespace Caravel.Clock
+namespace Caravel.Clock;
+
+/// <summary>
+/// DateTime implementation of the IClock interface.
+/// </summary>
+public class DateTimeUtcClock : IClock
 {
     /// <summary>
-    /// DateTime implementation of the IClock interface.
+    /// This method gets the current DateTime in UTC.
     /// </summary>
-    public class DateTimeUtcClock : IClock
+    /// <returns>DateTime.UtcNow</returns>
+    public DateTime NowUtc()
     {
-        /// <summary>
-        /// This method gets the current DateTime in UTC.
-        /// </summary>
-        /// <returns>DateTime.UtcNow</returns>
-        public DateTime NowUtc()
-        {
-            return DateTime.UtcNow;
-        }
+        return DateTime.UtcNow;
+    }
 
-        /// <summary>
-        /// This method gets the current DateTimeOffset in UTC.
-        /// </summary>
-        /// <returns></returns>
-        public DateTimeOffset NowOffsetUtc()
-        {
-            return DateTimeOffset.UtcNow;
-        }
+    /// <summary>
+    /// This method gets the current DateTimeOffset in UTC.
+    /// </summary>
+    /// <returns></returns>
+    public DateTimeOffset NowOffsetUtc()
+    {
+        return DateTimeOffset.UtcNow;
     }
 }

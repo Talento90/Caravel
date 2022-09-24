@@ -18,7 +18,7 @@ namespace Caravel.Http
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 Converters = new List<JsonConverter>()
                 {
-                    new StringEnumConverter(true)
+                    new StringEnumConverter(new CamelCaseNamingStrategy())
                 }
             };
         }
@@ -36,7 +36,7 @@ namespace Caravel.Http
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 Converters = new List<JsonConverter>()
                 {
-                    new StringEnumConverter(true)
+                    new StringEnumConverter(new SnakeCaseNamingStrategy())
                 }
             };
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Caravel.AppContext;
+using Caravel.ApplicationContext;
 using Caravel.Errors;
 using Caravel.Exceptions;
 using Caravel.MediatR.Security;
@@ -13,19 +13,19 @@ namespace Caravel.MediatR.Behaviours
 {
     public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly AppContext.AppContext _appContext;
+        private readonly ApplicationContext.ApplicationContext _applicationContext;
         private readonly IAuthorizer _authorizer;
 
         public AuthorizationBehaviour(IAppContextAccessor appContextAccessor, IAuthorizer authorizer)
         {
-            _appContext = appContextAccessor.Context;
+            _applicationContext = appContextAccessor.Context;
             _authorizer = authorizer;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken ct,
             RequestHandlerDelegate<TResponse> next)
         {
-            if (!_appContext.UserId.HasValue)
+            if (!_applicationContext.UserId.HasValue)
             {
                 throw new UnauthorizedException(new Error("authentication", "User is not authenticated."));
             }
@@ -48,7 +48,7 @@ namespace Caravel.MediatR.Behaviours
                     foreach (var role in roles)
                     {
                         var isInRole =
-                            await _authorizer.IsInRoleAsync(_appContext.UserId.Value, role.Trim(), ct);
+                            await _authorizer.IsInRoleAsync(_applicationContext.UserId.Value, role.Trim(), ct);
 
                         if (isInRole)
                         {
@@ -73,7 +73,7 @@ namespace Caravel.MediatR.Behaviours
                 foreach (var policy in authorizeAttributesWithPolicies.Select(a => a.Policy))
                 {
                     var authorized =
-                        await _authorizer.AuthorizeAsync(_appContext.UserId.Value, policy, ct);
+                        await _authorizer.AuthorizeAsync(_applicationContext.UserId.Value, policy, ct);
 
                     if (!authorized)
                     {
