@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Caravel.Entities
 {
-    public abstract class AggregateRoot : Entity
+    public abstract class AggregateRoot : Entity, IAggregateRoot
     {
         private readonly List<IDomainEvent> _domainEvents;
 

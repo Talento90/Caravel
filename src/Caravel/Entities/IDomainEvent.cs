@@ -6,6 +6,6 @@ namespace Caravel.Entities
     {
         Guid Id { get; }
         string Name { get; }
-        DateTime EventDate { get; set; }
+        DateTime EventDate { get; }
     }
 }
