@@ -8,6 +8,7 @@ namespace Caravel.Functional
     {
         private readonly List<Error> _errors;
         public IEnumerable<Error> Errors => _errors.AsReadOnly();
+        public Error Error => _errors.First();
         public bool HasErrors => _errors.Any();
 
         public Result()
@@ -33,17 +34,14 @@ namespace Caravel.Functional
         public static Result Success() => new();
         public static Result Failure(Error error) => new(error);
         public static Result Failure(IEnumerable<Error> errors) => new(errors);
-        public static Either<Error, TValue> Success<TValue>(TValue value)
-            => Either.Right<Error, TValue>(value);
-        public static Either<Error, TValue> Error<TValue>(Error error)
-            => Either.Left<Error, TValue>(error);
     }
 
     public class Result<T>
     {
-        public T? Data { get; }
+        public T Data { get; } = default!;
         private readonly List<Error> _errors;
         public IEnumerable<Error> Errors => _errors.AsReadOnly();
+        public Error Error => _errors.First();
         public bool HasErrors => _errors.Any();
 
         private Result(T data)

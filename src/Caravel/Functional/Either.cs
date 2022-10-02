@@ -1,3 +1,5 @@
+using Caravel.Errors;
+
 namespace Caravel.Functional
 {
     public abstract record Either<TLeft, TRight>
@@ -34,5 +36,10 @@ namespace Caravel.Functional
 
         public static Either<TLeft, TRight> Right<TLeft, TRight>(TRight value)
             => new Either<TLeft, TRight>.Right(value);
+        
+        public static Either<Error, TValue> Success<TValue>(TValue value)
+            => Right<Error, TValue>(value);
+        public static Either<Error, TValue> Error<TValue>(Error error)
+            => Left<Error, TValue>(error);
     }
 }
