@@ -22,8 +22,7 @@ namespace Caravel.MediatR.Behaviours
             _authorizer = authorizer;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken ct,
-            RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
         {
             if (!_applicationContext.UserId.HasValue)
             {

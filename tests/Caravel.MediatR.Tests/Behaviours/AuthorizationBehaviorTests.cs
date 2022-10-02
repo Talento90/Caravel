@@ -21,18 +21,18 @@ namespace Caravel.MediatR.Tests.Behaviours
             {
                 Context = new ApplicationContext.ApplicationContext("")
             };
-            
+
             var mock = new Mock<IAuthorizer>();
 
             var behaviour = new AuthorizationBehaviour<GetTestDataQuery, TestDataResponse>(ctx, mock.Object);
 
             var ex = await Assert.ThrowsAsync<Exceptions.UnauthorizedException>(() =>
-                behaviour.Handle(query, CancellationToken.None, () => Task.FromResult(new TestDataResponse()))
+                behaviour.Handle(query, () => Task.FromResult(new TestDataResponse()), CancellationToken.None)
             );
-            
+
             Assert.Equal("authentication", ex.Error.Code);
         }
-        
+
         [Fact]
         public async Task Should_Throw_Permission_Exception_When_User_Role_Is_Missing()
         {
@@ -42,21 +42,22 @@ namespace Caravel.MediatR.Tests.Behaviours
             {
                 Context = new ApplicationContext.ApplicationContext("", userId)
             };
-            
+
             var mock = new Mock<IAuthorizer>();
 
             mock.Setup(s => s.IsInRoleAsync(userId, "admin", CancellationToken.None)).ReturnsAsync(false);
-            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(false);;
+            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(false);
+            ;
 
             var behaviour = new AuthorizationBehaviour<GetTestDataQuery, TestDataResponse>(ctx, mock.Object);
 
             var ex = await Assert.ThrowsAsync<Exceptions.PermissionException>(() =>
-                behaviour.Handle(query, CancellationToken.None, () => Task.FromResult(new TestDataResponse()))
+                behaviour.Handle(query, () => Task.FromResult(new TestDataResponse()), CancellationToken.None)
             );
-            
+
             Assert.Equal("permission", ex.Error.Code);
         }
-        
+
         [Fact]
         public async Task Should_Throw_Permission_Exception_When_User_Policy_Is_Missing()
         {
@@ -66,18 +67,19 @@ namespace Caravel.MediatR.Tests.Behaviours
             {
                 Context = new ApplicationContext.ApplicationContext("", userId)
             };
-            
+
             var mock = new Mock<IAuthorizer>();
 
             mock.Setup(s => s.IsInRoleAsync(userId, "admin", CancellationToken.None)).ReturnsAsync(true);
-            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(false);;
+            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(false);
+            ;
 
             var behaviour = new AuthorizationBehaviour<GetTestDataQuery, TestDataResponse>(ctx, mock.Object);
 
             var ex = await Assert.ThrowsAsync<Exceptions.PermissionException>(() =>
-                behaviour.Handle(query, CancellationToken.None, () => Task.FromResult(new TestDataResponse()))
+                behaviour.Handle(query, () => Task.FromResult(new TestDataResponse()), CancellationToken.None)
             );
-            
+
             Assert.Equal("permission", ex.Error.Code);
         }
 
@@ -90,17 +92,18 @@ namespace Caravel.MediatR.Tests.Behaviours
             {
                 Context = new ApplicationContext.ApplicationContext("", userId)
             };
-            
+
             var mock = new Mock<IAuthorizer>();
 
             mock.Setup(s => s.IsInRoleAsync(userId, "admin", CancellationToken.None)).ReturnsAsync(true);
-            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(true);;
+            mock.Setup(s => s.AuthorizeAsync(userId, "CanRead", CancellationToken.None)).ReturnsAsync(true);
+            ;
 
             var behaviour = new AuthorizationBehaviour<GetTestDataQuery, TestDataResponse>(ctx, mock.Object);
 
-            var result = await behaviour.Handle(query, CancellationToken.None,
-                () => Task.FromResult(new TestDataResponse(){Data = "banana"}));
-            
+            var result = await behaviour.Handle(query,
+                () => Task.FromResult(new TestDataResponse() {Data = "banana"}), CancellationToken.None);
+
             Assert.Equal("banana", result.Data);
         }
     }

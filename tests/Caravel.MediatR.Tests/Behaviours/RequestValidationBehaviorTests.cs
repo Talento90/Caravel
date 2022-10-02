@@ -23,7 +23,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             );
 
             var ex = await Assert.ThrowsAsync<Caravel.Exceptions.ValidationException>(() =>
-                behaviour.Handle(query, CancellationToken.None, () => Task.FromResult(new TestDataResponse()))
+                behaviour.Handle(query, () => Task.FromResult(new TestDataResponse()), CancellationToken.None)
             );
             
             Assert.Equal("invalid_fields", ex.Error.Code);
@@ -55,7 +55,7 @@ namespace Caravel.MediatR.Tests.Behaviours
             );
 
             var response =
-                await behaviour.Handle(query, CancellationToken.None, () => Task.FromResult(expectedResponse));
+                await behaviour.Handle(query, () => Task.FromResult(expectedResponse), CancellationToken.None);
 
             Assert.Equal(expectedResponse, response);
         }
