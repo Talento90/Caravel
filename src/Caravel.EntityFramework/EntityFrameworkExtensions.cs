@@ -84,7 +84,7 @@ public static class EntityFrameworkExtensions
         }
     }
 
-    public static void SaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IEntity
+    public static void CreateAndSaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IAggregateRoot
     {
         var entries = dbContext.ChangeTracker
             .Entries()
@@ -94,7 +94,7 @@ public static class EntityFrameworkExtensions
 
         foreach (var entityEntry in entries)
         {
-            if (entityEntry.Entity is not IAggregateRoot entity)
+            if (entityEntry.Entity is not T entity)
                 continue;
 
             switch (entityEntry.State)
@@ -110,15 +110,62 @@ public static class EntityFrameworkExtensions
                     break;
             }
         }
-        
-        foreach (var entityEntry in entries.Where(e => e.State == EntityState.Deleted))
+
+        // Save all events
+        foreach (var entry in entries)
         {
-            if (entityEntry.Entity is not IAggregateRoot entity)
+            if (entry.Entity is not T entity)
                 continue;
 
-            entity.AddEvent(new DeletedEntityEvent(entity));
-        }
+            foreach (var domainEvent in entity.Events)
+            {
+                events.Add(new EntityEvent(domainEvent.Name, JsonSerializer.Serialize(domainEvent,
+                    new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    })));
+            }
 
+            entity.ClearEvents();
+        }
+    }
+    
+    
+    public static void SaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IAggregateRoot
+    {
+        var entries = dbContext.ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is T && e.State is
+                EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .ToList();
+        
+        // Save all events
+        foreach (var entry in entries)
+        {
+            if (entry.Entity is not T entity)
+                continue;
+
+            foreach (var domainEvent in entity.Events)
+            {
+                events.Add(new EntityEvent(domainEvent.Name, JsonSerializer.Serialize(domainEvent,
+                    new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    })));
+            }
+
+            entity.ClearEvents();
+        }
+    }
+    
+    public static void SaveDomainEvents(this DbContext dbContext, DbSet<EntityEvent> events)
+    {
+        var entries = dbContext.ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is IAggregateRoot && e.State is
+                EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .ToList();
+        
         // Save all events
         foreach (var entry in entries)
         {
