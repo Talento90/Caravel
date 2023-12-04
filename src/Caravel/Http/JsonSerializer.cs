@@ -30,7 +30,7 @@ namespace Caravel.Http
         public static object Deserialize(string json, Type type)
         {
             return JsonConvert.DeserializeObject(json, type, JsonSerializerOptions.CamelCase())
-                   ?? throw new JsonException();;
+                   ?? throw new JsonException();
         }
 
         public static bool TryDeserialize(string json, Type type, out object obj)

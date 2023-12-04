@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Caravel.AspNetCore.Middleware;
 using Caravel.AspNetCore.Tests.Mocks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Xunit;
@@ -15,7 +12,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
         public async Task Should_Generate_New_Trace_Id()
         {
             // Arrange
-            var appContext = new AppContextAccessorMock();
+            var appContext = new ApplicationContextAccessorMock();
             var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdSettings()),  appContext);
             var httpContext = new DefaultHttpContext();
             //Act
@@ -29,7 +26,7 @@ namespace Caravel.AspNetCore.Tests.Middleware
         public async Task Should_Reuse_Trace_Id()
         {
             // Arrange
-            var appContext = new AppContextAccessorMock();
+            var appContext = new ApplicationContextAccessorMock();
             var middleware = new TraceIdMiddleware((innerHttpContext) => Task.CompletedTask, Options.Create(new TraceIdSettings()), appContext);
             var context = new DefaultHttpContext();
 

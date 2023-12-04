@@ -66,7 +66,7 @@ namespace Caravel.Functional
             return this;
         }
 
-        public static Result<T> Success<T>(T value) => new(value);
+        public static Result<T> Success(T value) => new(value);
         public static Result<T> Failure(Error error) => new(error);
         public static Result<T> Failure(IEnumerable<Error> errors) => new(errors);
     }

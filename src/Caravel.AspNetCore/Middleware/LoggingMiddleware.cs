@@ -23,10 +23,10 @@ namespace Caravel.AspNetCore.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingMiddleware> _logger;
         private readonly LoggingSettings _settings;
-        private readonly IAppContextAccessor _contextAccessor;
+        private readonly IApplicationContextAccessor _contextAccessor;
         
         public LoggingMiddleware(RequestDelegate next, ILogger<LoggingMiddleware> logger,
-            IOptions<LoggingSettings> options, IAppContextAccessor contextAccessor)
+            IOptions<LoggingSettings> options, IApplicationContextAccessor contextAccessor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _next = next ?? throw new ArgumentNullException(nameof(next));

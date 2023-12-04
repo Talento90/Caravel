@@ -1,13 +1,11 @@
-using System.Threading;
-
 namespace Caravel.ApplicationContext;
 
 /// <summary>
-/// Provides an implementation of <see cref="IAppContextAccessor" /> based on the current execution context.
+/// Provides an implementation of <see cref="IApplicationContextAccessor" /> based on the current execution context.
 ///
 /// This implementation is based on: https://github.com/dotnet/aspnetcore/blob/master/src/Http/Http/src/HttpContextAccessor.cs 
 /// </summary>
-public record AppContextAccessor : IAppContextAccessor
+public record ApplicationContextAccessor : IApplicationContextAccessor
 {
     private static readonly AsyncLocal<AppContextHolder> AppContextCurrent = new();
 

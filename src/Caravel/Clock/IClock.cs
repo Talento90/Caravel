@@ -1,5 +1,3 @@
-using System;
-
 namespace Caravel.Clock;
 
 /// <summary>

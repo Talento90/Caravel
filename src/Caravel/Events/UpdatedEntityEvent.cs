@@ -7,7 +7,7 @@ public class UpdatedEntityEvent : IDomainEvent
 {
     public Guid Id { get; }
     public string Name => $"{Before.GetType().Name}.Updated";
-    public DateTime EventDate { get; set; }
+    public DateTimeOffset EventDate { get; set; }
     public IEntity Before { get; }
     public IEntity After { get; }
 
@@ -16,6 +16,6 @@ public class UpdatedEntityEvent : IDomainEvent
         Id = Guid.NewGuid();
         Before = beforeEntity;
         After = afterEntity;
-        EventDate = DateTime.UtcNow;
+        EventDate = DateTimeOffset.UtcNow;
     }
 }

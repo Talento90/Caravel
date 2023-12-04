@@ -1,24 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <OutputType>Library</OutputType>
-        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
-        <Nullable>enable</Nullable>
-        <RootNamespace>Caravel</RootNamespace>
-        <IsPackable>true</IsPackable>
-        <PackageVersion>0.21.0</PackageVersion>
-        <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
-        <PackageTags>dotnetcore,sdk</PackageTags>
-        <LangVersion>10</LangVersion>
-        <Title>Caravel</Title>
-        <Authors>Marco Talento</Authors>
-        <Description>Caravel is a package that contains common utilities for building dotnet applications.</Description>
-        <PackageProjectUrl>https://github.com/Talento90/Caravel</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIconUrl>
-        <PackageLicenseUrl>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicenseUrl>
-    </PropertyGroup>
-    <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <PackageVersion>0.22.0</PackageVersion>
+    <PackageTags>dotnetcore,sdk</PackageTags>
+    <Title>Caravel</Title>
+    <Description>Caravel is a package that contains common utilities for building dotnet applications.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json"/>
+  </ItemGroup>
 </Project>

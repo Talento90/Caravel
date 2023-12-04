@@ -29,12 +29,12 @@ public static class EntityFrameworkExtensions
 
             foreach (var p in properties)
             {
-                if (p.ClrType == typeof(DateTime))
+                if (p.ClrType == typeof(DateTimeOffset))
                 {
                     p.SetValueConverter(utcDateTimeConverter);
                 }
 
-                if (p.ClrType == typeof(DateTime?))
+                if (p.ClrType == typeof(DateTimeOffset?))
                 {
                     p.SetValueConverter(nullableUtcDateTimeConverter);
                 }
@@ -42,7 +42,7 @@ public static class EntityFrameworkExtensions
         }
     }
     
-    public static void AuditEntities(this DbContext dbContext, IAppContextAccessor contextAccessor)
+    public static void AuditEntities(this DbContext dbContext, IApplicationContextAccessor contextAccessor)
     {
         var userId = contextAccessor.Context.UserId;
 
@@ -59,7 +59,7 @@ public static class EntityFrameworkExtensions
             {
                 case EntityState.Added:
                 {
-                    entity.Created = DateTime.UtcNow;
+                    entity.Created = DateTimeOffset.UtcNow;
 
                     if (userId.HasValue)
                     {
@@ -71,7 +71,7 @@ public static class EntityFrameworkExtensions
                 case EntityState.Modified:
                 case EntityState.Deleted:
                 {
-                    entity.Updated = DateTime.UtcNow;
+                    entity.Updated = DateTimeOffset.UtcNow;
 
                     if (userId.HasValue)
                     {

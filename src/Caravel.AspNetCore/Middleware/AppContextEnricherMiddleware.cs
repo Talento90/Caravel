@@ -15,9 +15,9 @@ namespace Caravel.AspNetCore.Middleware
     public class AppContextEnricherMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IAppContextAccessor _contextAccessor;
+        private readonly IApplicationContextAccessor _contextAccessor;
         private readonly AppContextEnricherSettings _settings;
-        public AppContextEnricherMiddleware(RequestDelegate next, IAppContextAccessor contextAccessor, IOptions<AppContextEnricherSettings> options)
+        public AppContextEnricherMiddleware(RequestDelegate next, IApplicationContextAccessor contextAccessor, IOptions<AppContextEnricherSettings> options)
         {
             _next = next;
             _contextAccessor = contextAccessor;

@@ -14,10 +14,10 @@ namespace Caravel.AspNetCore.Middleware
     public class TraceIdMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IAppContextAccessor _contextAccessor;
+        private readonly IApplicationContextAccessor _contextAccessor;
         private readonly TraceIdSettings _settings;
 
-        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdSettings> options, IAppContextAccessor contextAccessor)
+        public TraceIdMiddleware(RequestDelegate next, IOptions<TraceIdSettings> options, IApplicationContextAccessor contextAccessor)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
