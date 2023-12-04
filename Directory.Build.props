@@ -18,8 +18,8 @@
         <Repository>caravel</Repository>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/talento90/{repository}</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIconUrl>
-        <PackageLicenseUrl>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProject>https://github.com/talento90/{repository}</PackageProject>
+        <PackageIcon>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIcon>
+        <PackageLicense>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicense>
     </PropertyGroup>
 </Project>
