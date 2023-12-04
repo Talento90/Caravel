@@ -19,7 +19,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
         <PackageProject>https://github.com/talento90/{repository}</PackageProject>
-        <PackageIcon>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.ico</PackageIcon>
+        <PackageIcon>https://raw.githubusercontent.com/Talento90/Caravel/master/assets/logo.png</PackageIcon>
         <PackageLicense>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicense>
     </PropertyGroup>
 </Project>
