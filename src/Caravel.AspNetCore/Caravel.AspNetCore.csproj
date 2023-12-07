@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <PackageVersion>0.21.0</PackageVersion>
+        <PackageVersion>0.22.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
         <PackageTags>dotnetcore,sdk</PackageTags>
         <Title>Caravel.AspNetCore</Title>
