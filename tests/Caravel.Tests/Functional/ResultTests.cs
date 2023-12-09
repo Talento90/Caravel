@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Caravel.Errors;
 using Caravel.Functional;
+using Caravel.Result;
 using Xunit;
 
 namespace Caravel.Tests.Functional;
@@ -9,97 +8,93 @@ namespace Caravel.Tests.Functional;
 public class ResultTests
 {
     [Fact]
-    public void Success_Should_Not_Contain_Errors()
+    public void Should_Not_Contain_Errors()
     {
-        var result = Result<string>.Success("Hello");
+        var result = Result<string, Error<TestErrorCodes>>.Success("Hello");
 
         Assert.Equal("Hello", result.Data);
-        Assert.Empty(result.Errors);
-        Assert.False(result.HasErrors);
-    }
-    
-    [Fact]
-    public void Non_Generic_Success_Should_Not_Contain_Errors()
-    {
-        var result = Result.Success();
-
-        Assert.Empty(result.Errors);
-        Assert.False(result.HasErrors);
+        Assert.False(result.HasError);
     }
 
     [Fact]
-    public void Failure_Should_Contain_Errors()
+    public void Should_Non_Generic_Not_Contain_Errors()
     {
-        var result = Result<string>.Failure(new Error("test", "It's an error"));
-        
-        Assert.Null(result.Data);
-        Assert.NotEmpty(result.Errors);
-        Assert.Single(result.Errors);
-        Assert.True(result.HasErrors);
-        Assert.Equal("test", result.Errors.First().Code);
-        Assert.Equal("It's an error", result.Errors.First().Message);
+        var result = Result<TestErrorCodes>.Success();
 
-        result.AddError(new Error("test2", "It's another error"));
-        Assert.Equal(2, result.Errors.Count());
-        
-        Assert.Equal("test2", result.Errors.Last().Code);
-        Assert.Equal("It's another error", result.Errors.Last().Message);
-    }
-    
-    [Fact]
-    public void Non_Generic_Failure_Should_Contain_Errors()
-    {
-        var result = Result.Failure(new Error("test", "It's an error"));
-        
-        Assert.NotEmpty(result.Errors);
-        Assert.Single(result.Errors);
-        Assert.True(result.HasErrors);
-        Assert.Equal("test", result.Errors.First().Code);
-        Assert.Equal("It's an error", result.Errors.First().Message);
-
-        result.AddError(new Error("test2", "It's another error"));
-        Assert.Equal(2, result.Errors.Count());
-        
-        Assert.Equal("test2", result.Errors.Last().Code);
-        Assert.Equal("It's another error", result.Errors.Last().Message);
+        Assert.False(result.HasError);
     }
 
     [Fact]
-    public void Failure_With_Multiple_Errors_Should_Contain_Errors()
+    public void Should_Implicit_Operator_Convert_Error_To_Result()
     {
-        var result = Result<string>.Failure(new List<Error>()
-        {
-            new ("test", "It's an error"),
-            new ("test2", "It's another error"),
-        });
-        
-        Assert.Null(result.Data);
-        Assert.NotEmpty(result.Errors);
-        Assert.Equal(2, result.Errors.Count());
-        Assert.True(result.HasErrors);
-        Assert.Equal("test", result.Errors.First().Code);
-        Assert.Equal("It's an error", result.Errors.First().Message);
-        
-        Assert.Equal("test2", result.Errors.Last().Code);
-        Assert.Equal("It's another error", result.Errors.Last().Message);
+        Result<string, TestErrorCodes> result =
+            new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Validation, "It's an error");
+
+        Assert.True(result.HasError);
+        Assert.Equal(TestErrorCodes.InvalidOperation, result.Error.Code);
+        Assert.Equal("It's an error", result.Error.Message);
     }
-    
+
     [Fact]
-    public void Non_Generic_Failure_With_Multiple_Errors_Should_Contain_Errors()
+    public void Should_Failure_Return_Error()
     {
-        var result = Result.Failure(new List<Error>()
-        {
-            new ("test", "It's an error"),
-            new ("test2", "It's another error"),
-        });
-        
-        Assert.NotEmpty(result.Errors);
-        Assert.Equal(2, result.Errors.Count());
-        Assert.True(result.HasErrors);
-        Assert.Equal("test", result.Errors.First().Code);
-        Assert.Equal("It's an error", result.Errors.First().Message);
-        
-        Assert.Equal("test2", result.Errors.Last().Code);
-        Assert.Equal("It's another error", result.Errors.Last().Message);
+        var result = Result<string, TestErrorCodes>.Failure(
+            new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Validation, "It's an error")
+        );
+
+        Assert.True(result.HasError);
+        Assert.Equal(TestErrorCodes.InvalidOperation, result.Error.Code);
+        Assert.Equal("It's an error", result.Error.Message);
+    }
+
+    [Fact]
+    public void Should_Non_Generic_Implicit_Operator_Convert_Error_To_Result()
+    {
+        Result<TestErrorCodes> result =
+            new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Validation, "It's an error");
+
+        Assert.True(result.HasError);
+        Assert.Equal(TestErrorCodes.InvalidOperation, result.Error.Code);
+        Assert.Equal("It's an error", result.Error.Message);
+    }
+
+    [Fact]
+    public void Should_Map_Return_Success_Value()
+    {
+        var result = Result<string, Error<TestErrorCodes>>.Success("Success Value")
+            .Map((success) => success.Length,
+                (error) => error.Message.Length
+            );
+
+        Assert.Equal("Success Value".Length, result);
+    }
+
+    [Fact]
+    public void Should_Map_Return_Failure_Value()
+    {
+        var result = Result<string, TestErrorCodes>.Failure(
+                new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Validation, "Failure Value"))
+            .Map((success) => success.Length,
+                (error) => error.Message.Length
+            );
+
+        Assert.Equal("Failure Value".Length, result);
+    }
+
+    [Fact]
+    public void Should_GetOrDefault_Return_DefaultValue()
+    {
+        var result = Result<string, TestErrorCodes>.Failure(
+            new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Validation, "Failure Value"));
+
+        Assert.Equal("other_value", result.GetOrDefault("other_value"));
+    }
+
+    [Fact]
+    public void Should_GetOrDefault_Return_Data()
+    {
+        var result = Result<string, Error<TestErrorCodes>>.Success("some_value");
+
+        Assert.Equal("some_value", result.GetOrDefault("other_value"));
     }
 }

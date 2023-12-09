@@ -1,5 +1,4 @@
 using Caravel.Errors;
-using Caravel.Exceptions;
 using Caravel.Functional;
 using Xunit;
 
@@ -10,7 +9,7 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Fold_Should_Return_Right_Value()
         {
-            var right = Either.Right<Error, string>("Success");
+            var right = Either.Right<Error<TestErrorCodes>, string>("Success");
 
             var result = right.Fold(
                 (e) => e.Message,
@@ -34,7 +33,7 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Map_Should_Return_Right_Value()
         {
-            var right = Either.Right<Error, string>("Success");
+            var right = Either.Right<Error<TestErrorCodes>, string>("Success");
 
             var result = right
                     .Map((r) => r.Length)
@@ -56,6 +55,38 @@ namespace Caravel.Tests.Functional
                 .Map((i => i.ToString()))
                 .Fold(
                     (l) => l,
+                    (r) => r);
+
+            Assert.Equal("error", result);
+        }
+        
+        [Fact]
+        public void Success_Should_Return_Right_Value()
+        {
+            var right = Either.Success<Error<TestErrorCodes>, string>("Success");
+
+            var result = right
+                .Map((r) => r.Length)
+                .Map((i => i.ToString()))
+                .Fold(
+                    (l) => l.Message,
+                    (r) => r);
+
+            Assert.Equal("7", result);
+        }
+        
+        [Fact]
+        public void Failure_Should_Return_Left_Value()
+        {
+            var failure = Either.Failure<TestErrorCodes, string>(
+                new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Permission, "error")
+                );
+
+            var result = failure
+                .Map((r) => r.Length)
+                .Map((i => i.ToString()))
+                .Fold(
+                    (l) => l.Message,
                     (r) => r);
 
             Assert.Equal("error", result);

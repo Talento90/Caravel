@@ -1,16 +1,22 @@
-﻿using Caravel.ApplicationContext;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Caravel.ApplicationContext;
 using Caravel.Entities;
 using Caravel.Events;
+using Caravel.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Newtonsoft.Json;
-using JsonSerializer = Caravel.Http.JsonSerializer;
-
 
 namespace Caravel.EntityFramework;
 
 public static class EntityFrameworkExtensions
 {
+    private static readonly JsonSerializerOptions SerializerOptions = new ()
+    {
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+        Converters = { new JsonStringEnumConverter() }
+    };
+    
     public static void ApplyUtcDateConverter(this ModelBuilder modelBuilder)
     {
         var utcDateTimeConverter = new ValueConverter<DateTime, DateTime>(
@@ -44,7 +50,7 @@ public static class EntityFrameworkExtensions
     
     public static void AuditEntities(this DbContext dbContext, IApplicationContextAccessor contextAccessor)
     {
-        var userId = contextAccessor.Context.UserId;
+        var userId = contextAccessor.Context.User.Id();
 
         var entries = dbContext.ChangeTracker
             .Entries()
@@ -119,17 +125,12 @@ public static class EntityFrameworkExtensions
 
             foreach (var domainEvent in entity.Events)
             {
-                events.Add(new EntityEvent(domainEvent.Name, JsonSerializer.Serialize(domainEvent,
-                    new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    })));
+                events.Add(new EntityEvent(domainEvent.Name, domainEvent.Serialize(SerializerOptions)));
             }
 
             entity.ClearEvents();
         }
     }
-    
     
     public static void SaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IAggregateRoot
     {
@@ -147,11 +148,7 @@ public static class EntityFrameworkExtensions
 
             foreach (var domainEvent in entity.Events)
             {
-                events.Add(new EntityEvent(domainEvent.Name, JsonSerializer.Serialize(domainEvent,
-                    new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    })));
+                events.Add(new EntityEvent(domainEvent.Name, domainEvent.Serialize(SerializerOptions)));
             }
 
             entity.ClearEvents();
@@ -174,11 +171,7 @@ public static class EntityFrameworkExtensions
 
             foreach (var domainEvent in entity.Events)
             {
-                events.Add(new EntityEvent(domainEvent.Name, JsonSerializer.Serialize(domainEvent,
-                    new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    })));
+                events.Add(new EntityEvent(domainEvent.Name, domainEvent.Serialize(SerializerOptions)));
             }
 
             entity.ClearEvents();

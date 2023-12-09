@@ -7,7 +7,4 @@
     <Title>Caravel</Title>
     <Description>Caravel is a package that contains common utilities for building dotnet applications.</Description>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json"/>
-  </ItemGroup>
 </Project>

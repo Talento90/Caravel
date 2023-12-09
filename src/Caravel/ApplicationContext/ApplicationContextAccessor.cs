@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace Caravel.ApplicationContext;
 
 /// <summary>
@@ -14,7 +16,7 @@ public record ApplicationContextAccessor : IApplicationContextAccessor
     /// </summary>
     public ApplicationContext Context
     {
-        get => AppContextCurrent?.Value?.Context ?? new Caravel.ApplicationContext.ApplicationContext(string.Empty);
+        get => AppContextCurrent?.Value?.Context ?? new ApplicationContext(new ClaimsPrincipal());
         set
         {
             var holder = AppContextCurrent.Value;

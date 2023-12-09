@@ -4,6 +4,6 @@ namespace Caravel.AspNetCore.Authentication
     {
         public const string Roles = "roles";
         public const string Scopes = "scopes";
-        public const string TenantId = "tenantId";
+        public const string TenantId = "tenant_id";
     }
 }

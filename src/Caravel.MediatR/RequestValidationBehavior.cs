@@ -1,4 +1,3 @@
-using Caravel.Errors;
 using FluentValidation;
 using MediatR;
 using ValidationException = Caravel.Exceptions.ValidationException;
@@ -15,8 +14,7 @@ public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         _validators = validators;
     }
 
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var context = new ValidationContext<TRequest>(request);
 
@@ -27,9 +25,9 @@ public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .GroupBy(k => k.PropertyName, v => v)
             .ToDictionary(k => k.Key, v => v.Select(e => e.ErrorMessage).ToArray());
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
-            throw new ValidationException(new Error("invalid_fields", "Payload contains invalid fields."), errors);
+            throw new ValidationException("Error validating fields.", errors);
         }
 
         return next();

@@ -1,4 +1,3 @@
-using System;
 using Caravel.Entities;
 
 namespace Caravel.Events;
