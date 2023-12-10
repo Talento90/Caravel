@@ -5,9 +5,9 @@
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <IsPackable>true</IsPackable>
     <PackageVersion>0.13.0</PackageVersion>
-    <PackageTags>dotnetcore,sdk,mediatr</PackageTags>
+    <PackageTags>dotnet,sdk,mediatr</PackageTags>
     <Title>Caravel.MediatR</Title>
-    <Description>Caravel.MediatR is a package that contains reusable behaviours (validation, authorization, logging).</Description>
+    <Description>Caravel.MediatR is a package that contains reusable behaviours (validation, logging).</Description>
   </PropertyGroup>
 
   <ItemGroup>

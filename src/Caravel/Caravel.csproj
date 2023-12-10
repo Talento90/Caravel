@@ -2,8 +2,8 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
-    <PackageVersion>0.22.0</PackageVersion>
-    <PackageTags>dotnetcore,sdk</PackageTags>
+    <PackageVersion>0.23.0</PackageVersion>
+    <PackageTags>dotnet,sdk</PackageTags>
     <Title>Caravel</Title>
     <Description>Caravel is a package that contains common utilities for building dotnet applications.</Description>
   </PropertyGroup>

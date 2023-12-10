@@ -1,3 +1,5 @@
+using Caravel.Errors;
+
 namespace Caravel.Exceptions;
 
 /// <summary>
@@ -6,7 +8,9 @@ namespace Caravel.Exceptions;
 /// </summary>
 public class CaravelException : Exception
 {
-    public CaravelException(string message, Exception? innerException = null) : base(message, innerException)
+    public Error Error { get; }
+    public CaravelException(Error error, Exception? innerException = null) : base(error.Message, innerException)
     {
+        Error = error;
     }
 }

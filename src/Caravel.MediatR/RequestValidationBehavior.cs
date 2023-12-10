@@ -1,7 +1,7 @@
+using Caravel.Errors;
+using Caravel.Exceptions;
 using FluentValidation;
 using MediatR;
-using ValidationException = Caravel.Exceptions.ValidationException;
-
 namespace Caravel.MediatR;
 
 public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -23,11 +23,13 @@ public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .SelectMany(result => result.Errors)
             .Where(e => e != null)
             .GroupBy(k => k.PropertyName, v => v)
-            .ToDictionary(k => k.Key, v => v.Select(e => e.ErrorMessage).ToArray());
+            .ToDictionary(k => k.Key, v => v.Select(e => e.ErrorMessage).ToArray())
+            .Select(err => new ValidationError(err.Key, err.Value))
+            .ToList();
 
         if (errors.Count != 0)
         {
-            throw new ValidationException("Error validating fields.", errors);
+            throw new CaravelException(Error.Validation("invalid_fields", "Invalid fields", errors));
         }
 
         return next();

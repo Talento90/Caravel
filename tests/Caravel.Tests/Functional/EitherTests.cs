@@ -9,7 +9,7 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Fold_Should_Return_Right_Value()
         {
-            var right = Either.Right<Error<TestErrorCodes>, string>("Success");
+            var right = Either.Right<Error, string>("Success");
 
             var result = right.Fold(
                 (e) => e.Message,
@@ -33,7 +33,7 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Map_Should_Return_Right_Value()
         {
-            var right = Either.Right<Error<TestErrorCodes>, string>("Success");
+            var right = Either.Right<Error, string>("Success");
 
             var result = right
                     .Map((r) => r.Length)
@@ -63,7 +63,7 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Success_Should_Return_Right_Value()
         {
-            var right = Either.Success<Error<TestErrorCodes>, string>("Success");
+            var right = Either.Success<Error, string>("Success");
 
             var result = right
                 .Map((r) => r.Length)
@@ -78,8 +78,8 @@ namespace Caravel.Tests.Functional
         [Fact]
         public void Failure_Should_Return_Left_Value()
         {
-            var failure = Either.Failure<TestErrorCodes, string>(
-                new Error<TestErrorCodes>(TestErrorCodes.InvalidOperation, ErrorType.Permission, "error")
+            var failure = Either.Failure<Error, string>(
+                new Error("error_code", ErrorType.Permission, "error")
                 );
 
             var result = failure

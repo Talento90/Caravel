@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <PackageVersion>0.22.0</PackageVersion>
+        <PackageVersion>0.23.0</PackageVersion>
         <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
-        <PackageTags>dotnetcore,sdk</PackageTags>
+        <PackageTags>dotnet,aspnet,sdk</PackageTags>
         <Title>Caravel.AspNetCore</Title>
         <Description>Caravel.AspNetCore is a package that contains common utilities for building asp.net core applications.</Description>
     </PropertyGroup>

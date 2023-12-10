@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
-    <PackageVersion>0.3.0</PackageVersion>
-    <PackageTags>dotnetcore,sdk,entityframework</PackageTags>
+    <PackageVersion>0.4.0</PackageVersion>
+    <PackageTags>dotnet,sdk,entityframework</PackageTags>
     <Title>Caravel.EntityFramework</Title>
     <Description>Caravel.EntityFramework contains extension methods that can be reuse across applications..</Description>
   </PropertyGroup>

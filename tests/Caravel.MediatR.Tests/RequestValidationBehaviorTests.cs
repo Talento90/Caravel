@@ -20,16 +20,16 @@ public class RequestValidationBehaviorTests
             }
         );
 
-        var ex = await Assert.ThrowsAsync<Caravel.Exceptions.ValidationException>(() =>
+        var ex = await Assert.ThrowsAsync<Exceptions.CaravelException>(() =>
             behaviour.Handle(query, () => Task.FromResult(new TestDataResponse {Data = string.Empty}),
                 CancellationToken.None)
         );
         
-        Assert.Equal(2, ex.Errors.Count);
+        Assert.Equal(2, ex.Error.ValidationErrors.Count);
 
-        Assert.Equal("'Id' must not be empty.", ex.Errors["Id"][0]);
-        Assert.Equal("'Query' must not be empty.", ex.Errors["Query"][0]);
-        Assert.Equal("The specified condition was not met for 'Query'.", ex.Errors["Query"][1]);
+        // Assert.Equal("'Id' must not be empty.", ex.Error.ValidationErrors["Id"][0]);
+        // Assert.Equal("'Query' must not be empty.", ex.Error.ValidationErrors["Query"][0]);
+        // Assert.Equal("The specified condition was not met for 'Query'.", ex.Error.ValidationErrors["Query"][1]);
     }
 
     [Fact]

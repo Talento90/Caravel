@@ -1,7 +1,7 @@
 using Caravel.AspNetCore.Http;
+using Caravel.Errors;
 using Caravel.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Caravel.AspNetCore.Middleware;
 
@@ -19,8 +19,23 @@ public class GlobalExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken ct)
     {
+        if (exception is CaravelException caravelException)
+        {
+            var logLevel = caravelException.Error.Severity switch
+            {
+                ErrorSeverity.Low => LogLevel.Information,
+                ErrorSeverity.Medium => LogLevel.Warning,
+                ErrorSeverity.High => LogLevel.Information,
+                _ => LogLevel.Critical
+            };
+            
+            _logger.Log(logLevel, exception, "Exception: {ex.Message}", exception.Message);    
+        }
+        else
+        {
+            _logger.LogError(exception, "Unknown Exception: {ex.Message}", exception.Message);    
+        }
         
-        _logger.LogError(exception, "Error: {ex.Message}", exception.Message);
         var error = HandleException(exception);
         
         httpContext.Response.StatusCode = error.Status ?? StatusCodes.Status500InternalServerError;
@@ -29,31 +44,18 @@ public class GlobalExceptionHandler : IExceptionHandler
         return true;
     }
 
-    private static HttpError<> HandleException(Exception ex)
+    private static HttpError HandleException(Exception ex)
     {
         return ex switch
         {
-            ValidationException validationException => new ProblemDetails
-            {
-                Title = "Invalid Request",
-                Status = StatusCodes.Status400BadRequest,
-                Detail = "Some problem occured. If it keeps happening, please contact support.",
-                Extensions = new Dictionary<string, object?>
-                {
-                    { "errors", validationException.Errors },
-                    { "code", "invalid_fields"}
-                }
-            },
-            _ => new ProblemDetails()
-            {
-                Title = "Server Error",
-                Status = StatusCodes.Status500InternalServerError,
-                Detail = "Some problem occured. If it keeps happening, please contact support.",
-                Extensions = new Dictionary<string, object?>
-                {
-                    { "code", "internal_error"}
-                }
-            }
+            CaravelException caravelException => new HttpError(caravelException.Error),
+            _ => new HttpError(
+                Error.Internal(
+                    "internal_server",
+                    "Server Error",
+                    "Some problem occured. If it keeps happening, please contact support.",
+                    ErrorSeverity.High
+                ))
         };
     }
 }

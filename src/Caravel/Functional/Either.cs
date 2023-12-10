@@ -37,9 +37,9 @@ public static class Either
     public static Either<TLeft, TRight> Right<TLeft, TRight>(TRight value)
         => new Either<TLeft, TRight>.Right(value);
 
-    public static Either<Error<TError>, TValue> Success<TError, TValue>(TValue value)
-        => Right<Error<TError>, TValue>(value);
+    public static Either<Error, TValue> Success<TError, TValue>(TValue value)
+        => Right<Error, TValue>(value);
 
-    public static Either<Error<TError>, TValue> Failure<TError, TValue>(Error<TError> error)
-        => Left<Error<TError>, TValue>(error);
+    public static Either<Error, TValue> Failure<TError, TValue>(Error error)
+        => Left<Error, TValue>(error);
 }
