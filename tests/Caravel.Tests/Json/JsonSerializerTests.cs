@@ -13,9 +13,9 @@ namespace Caravel.Tests.Json
         {
             var model = new Dto("Caravel");
 
-            var json = await model.SerializeAsync(new JsonSerializerOptions());
+            var json = await model.SerializeAsync(JsonSerializerConfigurations.CamelCaseSerializer());
             
-            Assert.Equal("{\"Name\":\"Caravel\"}", json);
+            Assert.Equal("{\"name\":\"Caravel\"}", json);
         }
     }
 }

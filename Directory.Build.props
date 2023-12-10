@@ -20,5 +20,10 @@
         <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
         <PackageProject>https://github.com/talento90/{repository}</PackageProject>
         <PackageLicense>https://github.com/Talento90/Caravel/blob/master/LICENSE</PackageLicense>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 </Project>

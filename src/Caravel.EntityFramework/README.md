@@ -1,0 +1,3 @@
+# Caravel.EntityFramework
+
+WIP

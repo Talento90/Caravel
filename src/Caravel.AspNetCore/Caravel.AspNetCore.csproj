@@ -1,25 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <PackageVersion>0.23.0</PackageVersion>
-        <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
-        <PackageTags>dotnet,aspnet,sdk</PackageTags>
-        <Title>Caravel.AspNetCore</Title>
-        <Description>Caravel.AspNetCore is a package that contains common utilities for building asp.net core applications.</Description>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <PackageVersion>0.23.0</PackageVersion>
+    <RepositoryUrl>https://github.com/Talento90/Caravel</RepositoryUrl>
+    <PackageTags>dotnet,aspnet,sdk</PackageTags>
+    <Title>Caravel.AspNetCore</Title>
+    <Description>Caravel.AspNetCore is a package that contains common utilities for building asp.net core applications.</Description>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Caravel\Caravel.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Caravel\Caravel.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" />
-        <PackageReference Include="Asp.Versioning.Http" />
-        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
-        <PackageReference Include="Swashbuckle.AspNetCore"/>
-    </ItemGroup>
-    
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+    <PackageReference Include="Swashbuckle.AspNetCore"/>
+  </ItemGroup>
+
 </Project>
