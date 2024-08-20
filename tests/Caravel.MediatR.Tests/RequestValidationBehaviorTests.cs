@@ -13,7 +13,7 @@ public class RequestValidationBehaviorTests
             Query = string.Empty
         };
 
-        var behaviour = new RequestValidationBehavior<GetTestDataQuery, TestDataResponse>(
+        var behaviour = new ValidationRequestBehavior<GetTestDataQuery, TestDataResponse>(
             new List<IValidator<GetTestDataQuery>>()
             {
                 new GetTestDataQuery.GetTestDataQueryValidator()
@@ -46,7 +46,7 @@ public class RequestValidationBehaviorTests
             Data = string.Empty
         };
 
-        var behaviour = new RequestValidationBehavior<GetTestDataQuery, TestDataResponse>(
+        var behaviour = new ValidationRequestBehavior<GetTestDataQuery, TestDataResponse>(
             new List<IValidator<GetTestDataQuery>>()
             {
                 new GetTestDataQuery.GetTestDataQueryValidator()

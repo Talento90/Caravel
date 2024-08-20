@@ -1,20 +1,22 @@
 using Caravel.Errors;
-using Caravel.Exceptions;
+using Caravel.Functional;
 using FluentValidation;
 using MediatR;
+
 namespace Caravel.MediatR;
 
-public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class ResultValidationRequestBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public ResultValidationRequestBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
 
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next,
+        CancellationToken cancellationToken)
     {
         var context = new ValidationContext<TRequest>(request);
 
@@ -29,9 +31,9 @@ public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
 
         if (errors.Count != 0)
         {
-            throw new CaravelException(Error.Validation("invalid_fields", "Invalid fields", errors));
+            return Error.Validation(ErrorCodes.ValidationError, "Invalid fields", errors);
         }
 
-        return next();
+        return await next();
     }
 }
