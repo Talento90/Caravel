@@ -2,14 +2,14 @@ using Caravel.Errors;
 
 namespace Caravel.AspNetCore.Http
 {
-    public static class HttpExtensions
+    public static class ApiProblemDetailsExtensions
     {
-        public static HttpError ToProblemDetails(this Error error)
+        public static ApiProblemDetails ToProblemDetails(this Error error)
         {
-            return new HttpError(error);
+            return new ApiProblemDetails(error);
         }
 
-        public static IResult ToHttpResult(this Error error)
+        public static IResult ToApiProblemDetailsResult(this Error error)
         {
             return error.Type switch
             {

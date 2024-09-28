@@ -5,7 +5,7 @@ namespace Caravel.Events;
 public class CreatedEntityEvent : IDomainEvent
 {
     public Guid Id { get; }
-    public string Name => $"{After.GetType().Name}.Created";
+    public string Name => $"{After.GetType().Name}.CreatedAt";
     public DateTimeOffset EventDate { get; set; }
     public IEntity After { get; }
 

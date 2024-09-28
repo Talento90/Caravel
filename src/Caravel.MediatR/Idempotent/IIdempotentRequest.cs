@@ -1,4 +1,4 @@
-namespace Caravel.MediatR;
+namespace Caravel.MediatR.Idempotent;
 
 public interface IIdempotentRequest
 {

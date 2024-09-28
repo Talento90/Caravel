@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Caravel.ApplicationContext;
 using Caravel.Entities;
 using Caravel.Events;
 using Caravel.Json;
+using Caravel.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,12 +11,12 @@ namespace Caravel.EntityFramework;
 
 public static class EntityFrameworkExtensions
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new ()
+    private static readonly JsonSerializerOptions SerializerOptions = new()
     {
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
-        Converters = { new JsonStringEnumConverter() }
+        Converters = {new JsonStringEnumConverter()}
     };
-    
+
     public static void ApplyUtcDateConverter(this ModelBuilder modelBuilder)
     {
         var utcDateTimeConverter = new ValueConverter<DateTime, DateTime>(
@@ -47,50 +47,45 @@ public static class EntityFrameworkExtensions
             }
         }
     }
-    
-    public static void AuditEntities(this DbContext dbContext, IApplicationContextAccessor contextAccessor)
+
+    public static void AuditEntities(this DbContext dbContext, IUserContext userContext)
     {
-        var userId = contextAccessor.Context.User.Id();
+        if (!userContext.UserId.HasValue)
+        {
+            return;
+        }
 
         var entries = dbContext.ChangeTracker
             .Entries()
-            .Where(e => e.Entity is IAuditable &&
-                        e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted);
+            .Where(e => e is
+                {Entity: IAuditable, State: EntityState.Added or EntityState.Modified or EntityState.Deleted});
 
         foreach (var entityEntry in entries)
         {
-            var entity = (IEntity) entityEntry.Entity;
+            var entity = (IAuditable) entityEntry.Entity;
+
 
             switch (entityEntry.State)
             {
                 case EntityState.Added:
                 {
-                    entity.Created = DateTimeOffset.UtcNow;
-
-                    if (userId.HasValue)
-                    {
-                        entity.CreatedBy = userId.Value;
-                    }
-
+                    entity.CreatedAt = DateTimeOffset.UtcNow;
+                    entity.CreatedBy = userContext.UserId.Value;
                     break;
                 }
                 case EntityState.Modified:
                 case EntityState.Deleted:
                 {
-                    entity.Updated = DateTimeOffset.UtcNow;
-
-                    if (userId.HasValue)
-                    {
-                        entity.UpdatedBy = userId.Value;
-                    }
-
+                    entity.UpdatedAt = DateTimeOffset.UtcNow;
+                    entity.UpdatedBy = userContext.UserId;
                     break;
                 }
             }
         }
     }
 
-    public static void CreateAndSaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IAggregateRoot
+    public static void CreateAndSaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events)
+        where T : IAggregateRoot
     {
         var entries = dbContext.ChangeTracker
             .Entries()
@@ -109,7 +104,7 @@ public static class EntityFrameworkExtensions
                     entity.AddEvent(new DeletedEntityEvent(entity));
                     break;
                 case EntityState.Modified:
-                    entity.AddEvent(new UpdatedEntityEvent((T)entityEntry.OriginalValues.ToObject(), entity));
+                    entity.AddEvent(new UpdatedEntityEvent((T) entityEntry.OriginalValues.ToObject(), entity));
                     break;
                 case EntityState.Added:
                     entity.AddEvent(new CreatedEntityEvent(entity));
@@ -131,7 +126,7 @@ public static class EntityFrameworkExtensions
             entity.ClearEvents();
         }
     }
-    
+
     public static void SaveDomainEvents<T>(this DbContext dbContext, DbSet<EntityEvent> events) where T : IAggregateRoot
     {
         var entries = dbContext.ChangeTracker
@@ -139,7 +134,7 @@ public static class EntityFrameworkExtensions
             .Where(e => e.Entity is T && e.State is
                 EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
-        
+
         // Save all events
         foreach (var entry in entries)
         {
@@ -154,7 +149,7 @@ public static class EntityFrameworkExtensions
             entity.ClearEvents();
         }
     }
-    
+
     public static void SaveDomainEvents(this DbContext dbContext, DbSet<EntityEvent> events)
     {
         var entries = dbContext.ChangeTracker
@@ -162,7 +157,7 @@ public static class EntityFrameworkExtensions
             .Where(e => e.Entity is IAggregateRoot && e.State is
                 EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
-        
+
         // Save all events
         foreach (var entry in entries)
         {

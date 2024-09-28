@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Caravel.AspNetCore.Http;
 using Caravel.Errors;
 using Caravel.Exceptions;
@@ -21,6 +22,9 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         if (exception is CaravelException caravelException)
         {
+            Activity.Current?.SetTag(ObservabilityTags.ErrorType, caravelException.Error.Type);
+            Activity.Current?.SetTag(ObservabilityTags.ErrorCode, caravelException.Error.Code);
+
             var logLevel = caravelException.Error.Severity switch
             {
                 ErrorSeverity.Low => LogLevel.Information,
@@ -29,11 +33,14 @@ public class GlobalExceptionHandler : IExceptionHandler
                 _ => LogLevel.Critical
             };
             
-            _logger.Log(logLevel, exception, "Exception: {ex.Message}", exception.Message);    
+            _logger.Log(logLevel, exception, "Exception: {Message}", exception.Message);    
         }
         else
         {
-            _logger.LogError(exception, "Unknown Exception: {ex.Message}", exception.Message);    
+            Activity.Current?.SetTag(ObservabilityTags.ErrorType, "unhandled");
+            Activity.Current?.SetTag(ObservabilityTags.ErrorCode, "unhandled");
+
+            _logger.LogError(exception, "Unknown Exception: {Message}", exception.Message);    
         }
         
         var error = HandleException(exception);
@@ -44,14 +51,14 @@ public class GlobalExceptionHandler : IExceptionHandler
         return true;
     }
 
-    private static HttpError HandleException(Exception ex)
+    private static ApiProblemDetails HandleException(Exception ex)
     {
         return ex switch
         {
-            CaravelException caravelException => new HttpError(caravelException.Error),
-            _ => new HttpError(
+            CaravelException caravelException => new ApiProblemDetails(caravelException.Error),
+            _ => new ApiProblemDetails(
                 Error.Internal(
-                    "internal_server",
+                    "internal",
                     "Server Error",
                     "Some problem occured. If it keeps happening, please contact support.",
                     ErrorSeverity.High

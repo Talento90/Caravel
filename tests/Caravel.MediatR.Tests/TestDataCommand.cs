@@ -1,16 +1,17 @@
+using Caravel.Functional;
 using FluentValidation;
 using MediatR;
 
 namespace Caravel.MediatR.Tests;
 
-public record GetTestDataQuery : IRequest<TestDataResponse>
+public record TestDataCommand : IRequest<TestDataResponse>
 {
     public Guid Id { get; set; }
     public required string Query { get; init; }
 
-    public class GetTestDataQueryValidator : AbstractValidator<GetTestDataQuery>
+    public class TestDataCommandValidator : AbstractValidator<TestDataCommand>
     {
-        public GetTestDataQueryValidator()
+        public TestDataCommandValidator()
         {
             RuleFor(t => t.Id).NotEmpty();
             RuleFor(t => t.Query)

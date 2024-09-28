@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\src\Caravel.MediatR\Caravel.MediatR.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+
 </Project>

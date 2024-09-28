@@ -2,22 +2,18 @@
 
 This package does not have any external dependency and it brings all basic utilities that every application should handle such as application context or exceptions.
 
-* Application context (User)
+* IUserContext (User)
 
 ```c#
-//Inject IAppContextAccessor on constructor.
-IApplicationContextAccessor contextAccessor = ...
-
-//Get the application context.
-ApplicationContext context = contextAccessor.Context;
+//Inject IUserContext on constructor.
+IUserContext userContext = ...
 
 //Get User Id of the current user.
-ApplicationContext.User.Id();
+userContext.UserId();
 
 //Get TenantId of the current tenant. It is useful when dealing with multitenant applications.
-ApplicationContext.TenantId();
+userContext.TenantId();
 ```
-
 
 * Handling Errors
 

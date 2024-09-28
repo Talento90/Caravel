@@ -1,3 +1,4 @@
+using Caravel.MediatR.Validation;
 using FluentValidation;
 using Xunit;
 
@@ -27,9 +28,12 @@ public class RequestValidationBehaviorTests
         
         Assert.Equal(2, ex.Error.ValidationErrors.Count);
 
-        // Assert.Equal("'Id' must not be empty.", ex.Error.ValidationErrors["Id"][0]);
-        // Assert.Equal("'Query' must not be empty.", ex.Error.ValidationErrors["Query"][0]);
-        // Assert.Equal("The specified condition was not met for 'Query'.", ex.Error.ValidationErrors["Query"][1]);
+        Assert.Equal("Id", ex.Error.ValidationErrors[0].Identifier);
+        Assert.Equal("'Id' must not be empty.", ex.Error.ValidationErrors[0].Errors[0]);
+        
+        Assert.Equal("Query", ex.Error.ValidationErrors[1].Identifier);
+        Assert.Equal("'Query' must not be empty.", ex.Error.ValidationErrors[1].Errors[0]);
+        Assert.Equal("The specified condition was not met for 'Query'.", ex.Error.ValidationErrors[1].Errors[1]);
     }
 
     [Fact]

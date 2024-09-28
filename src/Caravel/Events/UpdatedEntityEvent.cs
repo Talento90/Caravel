@@ -5,7 +5,7 @@ namespace Caravel.Events;
 public class UpdatedEntityEvent : IDomainEvent
 {
     public Guid Id { get; }
-    public string Name => $"{Before.GetType().Name}.Updated";
+    public string Name => $"{Before.GetType().Name}.UpdatedAt";
     public DateTimeOffset EventDate { get; set; }
     public IEntity Before { get; }
     public IEntity After { get; }

@@ -2,14 +2,7 @@ using Caravel.Errors;
 using Caravel.Functional;
 using MediatR;
 
-namespace Caravel.MediatR;
-
-public interface IIdempotentService
-{
-    Task<bool> RequestExistsAsync(Guid requestId, CancellationToken cancellationToken = default);
-    Task CreateRequestAsync(IIdempotentRequest request, CancellationToken cancellationToken = default);
-}
-
+namespace Caravel.MediatR.Idempotent;
 
 public class IdempotentRequestBehaviour <TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : IIdempotentRequest

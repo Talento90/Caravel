@@ -4,22 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Caravel.AspNetCore.Http;
 
-public class HttpError : ProblemDetails
+public class ApiProblemDetails : ProblemDetails
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyOrder(-6)]
+    [JsonPropertyName("code")]
     public string? Code { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyOrder(-7)]
+    [JsonPropertyName("errors")]
     public Dictionary<string, IEnumerable<string>>? Errors { get; set; }
 
-    public HttpError()
+    public ApiProblemDetails()
     {
         
     }
     
-    public HttpError(Error error)
+    public ApiProblemDetails(Error error)
     {
         Title = error.Message;
         Detail = error.Detail;

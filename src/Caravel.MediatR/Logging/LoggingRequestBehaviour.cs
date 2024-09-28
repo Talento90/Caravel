@@ -1,11 +1,10 @@
 using System.Diagnostics;
 using Caravel.Errors;
 using Caravel.Functional;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Caravel.MediatR;
+namespace Caravel.MediatR.Logging;
 
 public class LoggingRequestBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : IRequest<TResponse>

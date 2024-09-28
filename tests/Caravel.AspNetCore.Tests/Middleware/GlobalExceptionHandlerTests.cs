@@ -1,9 +1,8 @@
-using System.Net;
+using System.Text.Json;
 using Caravel.AspNetCore.Http;
 using Caravel.AspNetCore.Middleware;
 using Caravel.Errors;
 using Caravel.Exceptions;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Caravel.AspNetCore.Tests.Middleware;
@@ -27,12 +26,12 @@ public class ExceptionMiddlewareTests
             await exceptionHandler.TryHandleAsync(context, new Exception("Exception"), CancellationToken.None);
 
         context.Response.Body.Seek(0, SeekOrigin.Begin);
-        var reader = new StreamReader(context.Response.Body);
-        var streamText = await reader.ReadToEndAsync();
-        var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
+
+        var httpError = await JsonSerializer.DeserializeAsync<ApiProblemDetails>(context.Response.Body);
 
         //Assert
         Assert.Equal(StatusCodes.Status500InternalServerError, context.Response.StatusCode);
+        Assert.Equal("internal", httpError?.Code);
         Assert.Equal("Server Error", httpError?.Title);
         Assert.True(result);
     }
@@ -56,9 +55,7 @@ public class ExceptionMiddlewareTests
             CancellationToken.None);
 
         context.Response.Body.Seek(0, SeekOrigin.Begin);
-        var reader = new StreamReader(context.Response.Body);
-        var streamText = await reader.ReadToEndAsync();
-        var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
+        var httpError = await JsonSerializer.DeserializeAsync<ApiProblemDetails>(context.Response.Body);
 
         //Assert
         Assert.Equal(StatusCodes.Status500InternalServerError, context.Response.StatusCode);
@@ -93,9 +90,8 @@ public class ExceptionMiddlewareTests
             CancellationToken.None);
 
         context.Response.Body.Seek(0, SeekOrigin.Begin);
-        var reader = new StreamReader(context.Response.Body);
-        var streamText = await reader.ReadToEndAsync();
-        var httpError = JsonConvert.DeserializeObject<HttpError>(streamText);
+        
+        var httpError = await JsonSerializer.DeserializeAsync<ApiProblemDetails>(context.Response.Body);
 
         //Assert
         Assert.Equal(StatusCodes.Status400BadRequest, context.Response.StatusCode);
