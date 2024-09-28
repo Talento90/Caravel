@@ -4,9 +4,9 @@ namespace Caravel.AspNetCore.Security;
 
 public class UserContext : IUserContext
 {
-    private readonly HttpContextAccessor _contextAccessor;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public UserContext(HttpContextAccessor contextAccessor)
+    public UserContext(IHttpContextAccessor contextAccessor)
     {
         _contextAccessor = contextAccessor;
     }
