@@ -7,6 +7,10 @@ This package contains reusable middleware, http utilities that every application
 ```c#
 // Handle exceptions according to RFC: https://tools.ietf.org/html/rfc7807
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+// Map the middleware
+_application.UseExceptionHandler();
 ```
 
 ```json
