@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Caravel.MediatR.Idempotent;
 
-public class IdempotentRequestBehaviour <TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
+public sealed class IdempotentPipelineBehaviour <TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : IIdempotentRequest
 {
     private readonly IIdempotentService _idempotentService;
 
-    public IdempotentRequestBehaviour(IIdempotentService idempotentService)
+    public IdempotentPipelineBehaviour(IIdempotentService idempotentService)
     {
         _idempotentService = idempotentService;
     }

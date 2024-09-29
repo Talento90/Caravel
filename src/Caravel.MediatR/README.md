@@ -2,7 +2,7 @@
 
 This package contains reusable MediatR behaviours.
 
-### Logging Behaviour
+### Logging Pipeline Behaviour
 
 Creates an entry Log for the start and failure of each request in the pipeline. It will log the error in case the request fails.  
 
@@ -10,21 +10,19 @@ Creates an entry Log for the start and failure of each request in the pipeline. 
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-    cfg.AddOpenBehavior(typeof(LoggingRequestBehaviour<,>));
+    cfg.AddOpenBehavior(typeof(LoggingPipelineBehaviour<,>));
 });
 ```
 
-### Validation and ResultValidation Behaviour
+### Validation Pipeline Behaviour
 
-Validates requests using FluentValidation. 
-It is recommended to use `ResultValidationRequestBehaviour` when using the `Result` pattern to avoid throwing unnecessary `ValidationException`.
+Validates requests using FluentValidation. This behaviour detects via reflection if the Response is using the `Result` pattern to avoid throwing unnecessary `ValidationException`, if not then throws it.
 
 ```c#
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-    cfg.AddOpenBehavior(typeof(ValidationRequestBehaviour<,>));
-    cfg.AddOpenBehavior(typeof(ResultValidationRequestBehaviour<,>));
+    cfg.AddOpenBehavior(typeof(ValidationPipelineBehaviour<,>));
 });
 ```
 
@@ -39,7 +37,7 @@ builder.Services.AddMediatR(cfg =>
 }
 ```
 
-### Idempotent Behaviour
+### Idempotent Pipeline Behaviour
 
 Ensures all requests implementing interface `IIdempotentRequest` are idempotent.
 
@@ -47,7 +45,30 @@ Ensures all requests implementing interface `IIdempotentRequest` are idempotent.
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-    cfg.AddOpenBehavior(typeof(IdempotentRequestBehaviour<,>));
+    cfg.AddOpenBehavior(typeof(IdempotentPipelineBehaviour<,>));
+});
+```
+
+```json
+{
+  "code": "duplicate_request",
+  "title": "Duplicate request",
+  "status": 204,
+  "detail": "Duplicate request with Idempotent Key 53655b3d-48d5-4ac1-ba73-4318b3b702e8."
+}
+```
+
+### Caching Pipeline Behaviour
+
+Caches responses where the request implements `ICachedQuery`.
+
+```c#
+// Requires implementing the caching service.
+builder.Services.AddSingleton<ICacheService, CacheService>();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    cfg.AddOpenBehavior(typeof(CachingPipelineBehavior<,>));
 });
 ```
 
