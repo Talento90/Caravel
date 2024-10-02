@@ -12,4 +12,5 @@ Caravel is a collection of SDKs to help developers building .NET applications:
 
 ## Projects using Caravel
 
-* [Caravel Template](https://github.com/Talento90/Caravel-Template) - .NET template that generates a functional web api using the *best practices*.
+* [Caravel Template](https://github.com/Talento90/Caravel-Template) - .NET template that generates a functional api using hexagonal architecture.
+* [Caravel Template Vertical Slice](https://github.com/Talento90/Caravel-Template-Vertical-Slice) - .NET template that generates a functional api using vertical slice architecture.
