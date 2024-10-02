@@ -8,6 +8,7 @@ namespace Caravel.AspNetCore.Middleware;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
+    private const string FailedBindingParameterError = "Failed to bind parameter";
     private readonly ILogger<GlobalExceptionHandler> _logger;
 
     public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
@@ -35,6 +36,13 @@ public class GlobalExceptionHandler : IExceptionHandler
             
             _logger.Log(logLevel, exception, "Exception: {Message}", exception.Message);    
         }
+        else if (exception is BadHttpRequestException httpRequestException)
+        {
+            Activity.Current?.SetTag(ObservabilityTags.ErrorType, ErrorType.Validation);
+            Activity.Current?.SetTag(ObservabilityTags.ErrorCode, ErrorCodes.ValidationError);
+
+            _logger.Log(LogLevel.Information, exception, "Exception: {Message}", exception.Message);
+        }
         else
         {
             Activity.Current?.SetTag(ObservabilityTags.ErrorType, "unhandled");
@@ -56,13 +64,25 @@ public class GlobalExceptionHandler : IExceptionHandler
         return ex switch
         {
             CaravelException caravelException => new ApiProblemDetails(caravelException.Error),
+            BadHttpRequestException badRequestException => new ApiProblemDetails(HandleBadRequestException(badRequestException)),
             _ => new ApiProblemDetails(
                 Error.Internal(
-                    "internal",
+                    ErrorCodes.InternalError,
                     "Server Error",
                     "Some problem occured. If it keeps happening, please contact support.",
                     ErrorSeverity.High
                 ))
         };
     }
+
+    private static Error HandleBadRequestException(BadHttpRequestException exception)
+    {
+        var isBindingParameterError = exception.Message.StartsWith(FailedBindingParameterError);
+        
+        var errorMessage = isBindingParameterError ? 
+            exception.Message.Replace(FailedBindingParameterError, "Invalid format parameter") : 
+            "Invalid parameters or payload format.";
+        
+        return Error.Validation(ErrorCodes.ValidationError, errorMessage);
+    } 
 }

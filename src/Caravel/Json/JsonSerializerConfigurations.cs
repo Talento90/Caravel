@@ -9,7 +9,9 @@ public static class JsonSerializerConfigurations
         return new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new JsonStringEnumConverter() },
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = true,
+            Converters = { new JsonStringUnknownEnumConverter(JsonNamingPolicy.CamelCase) },
         };
     }
 
@@ -18,7 +20,9 @@ public static class JsonSerializerConfigurations
         return new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            Converters = { new JsonStringEnumConverter() },
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = true,
+            Converters = { new JsonStringUnknownEnumConverter(JsonNamingPolicy.SnakeCaseLower) },
         };
     }
 }
