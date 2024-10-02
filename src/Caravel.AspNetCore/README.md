@@ -22,6 +22,26 @@ _application.UseExceptionHandler();
 }
 ```
 
+* ApiKey Endpoint Filter
+
+```c#
+services.Configure<ApiKeyOptions>(configuration.GetSection("Authentication"));
+
+// Add to a group or single endpoints using: .AddEndpointFilter<ApiKeyEndpointFilter>();
+var versionedGroup = application
+    .MapGroup("api/v{version:apiVersion}")
+    .WithApiVersionSet(apiVersionSet)
+    .AddEndpointFilter<ApiKeyEndpointFilter>();
+```
+
+```json
+{
+  "title": "Provide X-API-KEY header.",
+  "status": 401,
+  "code": "api_key_missing"
+}
+```
+
 * Endpoint Features
 
 Add all endpoints features that implement `IEndpointFeature` interface.

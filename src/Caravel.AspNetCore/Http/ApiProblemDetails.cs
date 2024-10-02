@@ -6,29 +6,30 @@ namespace Caravel.AspNetCore.Http;
 
 public class ApiProblemDetails : ProblemDetails
 {
-    [JsonPropertyName("code")]
-    public string? Code { get; set; }
-    [JsonPropertyName("errors")]
-    public Dictionary<string, IEnumerable<string>>? Errors { get; set; }
+    [JsonPropertyName("code")] public string? Code { get; set; }
+    [JsonPropertyName("errors")] public Dictionary<string, IEnumerable<string>>? Errors { get; set; }
 
     public ApiProblemDetails()
     {
-        
     }
-    
+
     public ApiProblemDetails(Error error)
     {
         Title = error.Message;
         Detail = error.Detail;
         Code = error.Code;
         Status = MapErrorTypeToHttpStatusCode(error.Type);
-        Errors = error.ValidationErrors
-            .GroupBy((ValidationError validationError) => validationError.Identifier)
-            .ToDictionary(
-                keySelector => keySelector.Key,
-                valueSelector => valueSelector.SelectMany(ve => ve.Errors.ToArray()));
+
+        if (error.ValidationErrors.Count != 0)
+        {
+            Errors = error.ValidationErrors
+                .GroupBy((ValidationError validationError) => validationError.Identifier)
+                .ToDictionary(
+                    keySelector => keySelector.Key,
+                    valueSelector => valueSelector.SelectMany(ve => ve.Errors.ToArray()));
+        }
     }
-    
+
     private static int MapErrorTypeToHttpStatusCode(ErrorType type)
     {
         return type switch
