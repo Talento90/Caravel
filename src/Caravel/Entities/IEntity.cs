@@ -4,6 +4,6 @@ namespace Caravel.Entities
 {
     public interface IEntity
     {
-        public Guid Id { get; set; }
+        public Ulid Id { get; set; }
     }
 }

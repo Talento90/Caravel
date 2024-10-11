@@ -4,7 +4,7 @@ namespace Caravel.Events;
 
 public class UpdatedEntityEvent : IDomainEvent
 {
-    public Guid Id { get; }
+    public Ulid Id { get; }
     public string Name => $"{Before.GetType().Name}.UpdatedAt";
     public DateTimeOffset EventDate { get; set; }
     public IEntity Before { get; }
@@ -12,7 +12,7 @@ public class UpdatedEntityEvent : IDomainEvent
 
     public UpdatedEntityEvent(IEntity beforeEntity, IEntity afterEntity)
     {
-        Id = Guid.NewGuid();
+        Id = Ulid.NewUlid();
         Before = beforeEntity;
         After = afterEntity;
         EventDate = DateTimeOffset.UtcNow;

@@ -4,7 +4,7 @@ namespace Caravel.Entities
 {
     public class Entity : IEntity, IAuditable
     {
-        public Guid Id { get; set; }
+        public Ulid Id { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
         public Guid CreatedBy { get; set; }
@@ -12,7 +12,7 @@ namespace Caravel.Entities
 
         public Entity()
         {
-            Id = Guid.NewGuid();
+            Id = Ulid.NewUlid();
             CreatedAt = DateTimeOffset.UtcNow;
             UpdatedAt = DateTimeOffset.UtcNow;
         }
