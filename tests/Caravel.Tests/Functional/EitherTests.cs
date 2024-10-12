@@ -79,7 +79,7 @@ namespace Caravel.Tests.Functional
         public void Failure_Should_Return_Left_Value()
         {
             var failure = Either.Failure<Error, string>(
-                new Error("error_code", ErrorType.Permission, "error")
+                new Error("error_code", ErrorType.Unauthorized, "error")
                 );
 
             var result = failure

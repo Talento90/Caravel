@@ -11,7 +11,7 @@ public class UserContext(IHttpContextAccessor contextAccessor) : IUserContext
         var userId = contextAccessor.HttpContext?.User.UserId();
 
         return string.IsNullOrEmpty(userId)
-            ? Error.Unauthorized("unauthorized_user", "User is not authenticated.")
+            ? Error.Unauthenticated("unauthenticated_user", "User is not authenticated.")
             : Result<string>.Success(userId);
     }
     
@@ -20,7 +20,7 @@ public class UserContext(IHttpContextAccessor contextAccessor) : IUserContext
         var tenantId = contextAccessor.HttpContext?.User.TenantId();
 
         return string.IsNullOrEmpty(tenantId)
-            ? Error.Unauthorized("unauthorized_tenant", "Missing tenant identifier.")
+            ? Error.Unauthenticated("unauthenticated_tenant", "Missing tenant identifier.")
             : Result<string>.Success(tenantId);
     }
 

@@ -19,7 +19,7 @@ public class ApiKeyEndpointFilter(IOptions<ApiKeyOptions> options) : IEndpointFi
         if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var extractedApiKey))
         {
             var missingHeader = new ApiProblemDetails(
-                Error.Unauthorized("api_key_missing", $"Provide {ApiKeyHeaderName} header.")
+                Error.Unauthenticated(ErrorCodes.ApiKeyMissing, $"Provide {ApiKeyHeaderName} header.")
             );
 
             return new UnauthorizedResult(missingHeader);
@@ -28,7 +28,7 @@ public class ApiKeyEndpointFilter(IOptions<ApiKeyOptions> options) : IEndpointFi
         if (!_apiKeyValue.Equals(extractedApiKey))
         {
             var invalidApiKey = new ApiProblemDetails(
-                Error.Unauthorized("api_key_invalid", "API Key is not valid.")
+                Error.Unauthenticated(ErrorCodes.ApiKeyInvalid, "API Key is not valid.")
             );          
             
             return new UnauthorizedResult(invalidApiKey);

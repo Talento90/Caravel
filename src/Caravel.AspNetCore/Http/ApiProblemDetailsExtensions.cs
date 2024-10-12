@@ -14,8 +14,8 @@ namespace Caravel.AspNetCore.Http
             return error.Type switch
             {
                 ErrorType.Validation => Results.BadRequest(error.ToProblemDetails()),
-                ErrorType.Permission => Results.Forbid(),
-                ErrorType.Unauthorized => Results.Unauthorized(),
+                ErrorType.Unauthorized => Results.Forbid(),
+                ErrorType.Unauthenticated => Results.Unauthorized(),
                 ErrorType.Conflict => Results.Conflict(error.ToProblemDetails()),
                 ErrorType.NotFound => Results.NotFound(error.ToProblemDetails()),
                 _ => Results.StatusCode(StatusCodes.Status500InternalServerError)

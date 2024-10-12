@@ -43,17 +43,17 @@ public sealed class Error
     {
         return new Error(code, ErrorType.Conflict, message, detail, severity);
     }
-    public static Error Permission(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
+    public static Error Unauthorized(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
     {
-        return new Error(code, ErrorType.Permission, message, detail, severity);
+        return new Error(code, ErrorType.Unauthorized, message, detail, severity);
     }
     public static Error NotFound(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
     {
         return new Error(code, ErrorType.NotFound, message, detail, severity);
     }
-    public static Error Unauthorized(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
+    public static Error Unauthenticated(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
     {
-        return new Error(code, ErrorType.Unauthorized, message, detail, severity);
+        return new Error(code, ErrorType.Unauthenticated, message, detail, severity);
     }
     public static Error Internal(string code, string message, string? detail = null, ErrorSeverity severity = ErrorSeverity.Low)
     {

@@ -35,8 +35,8 @@ public class ApiProblemDetails : ProblemDetails
         return type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.Permission => StatusCodes.Status403Forbidden,
-            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+            ErrorType.Unauthorized => StatusCodes.Status403Forbidden,
+            ErrorType.Unauthenticated => StatusCodes.Status401Unauthorized,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError

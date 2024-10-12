@@ -5,8 +5,8 @@ public enum ErrorType
     None,
     Internal,
     Validation,
-    Permission,
     Unauthorized,
+    Unauthenticated,
     Conflict,
     NotFound
 }

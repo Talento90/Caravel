@@ -39,7 +39,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         else if (exception is BadHttpRequestException httpRequestException)
         {
             Activity.Current?.SetTag(ObservabilityTags.ErrorType, ErrorType.Validation);
-            Activity.Current?.SetTag(ObservabilityTags.ErrorCode, ErrorCodes.ValidationError);
+            Activity.Current?.SetTag(ObservabilityTags.ErrorCode, ErrorCodes.Validation);
 
             _logger.Log(LogLevel.Information, exception, "Exception: {Message}", exception.Message);
         }
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             BadHttpRequestException badRequestException => new ApiProblemDetails(HandleBadRequestException(badRequestException)),
             _ => new ApiProblemDetails(
                 Error.Internal(
-                    ErrorCodes.InternalError,
+                    ErrorCodes.Internal,
                     "Server Error",
                     "Some problem occured. If it keeps happening, please contact support.",
                     ErrorSeverity.High
@@ -83,6 +83,6 @@ public class GlobalExceptionHandler : IExceptionHandler
             exception.Message.Replace(FailedBindingParameterError, "Invalid format parameter") : 
             "Invalid parameters or payload format.";
         
-        return Error.Validation(ErrorCodes.ValidationError, errorMessage);
+        return Error.Validation(ErrorCodes.Validation, errorMessage);
     } 
 }
