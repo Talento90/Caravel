@@ -1,10 +1,10 @@
 using System.Security.Claims;
+using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace Caravel.Security;
+namespace Caravel.AspNetCore.Security;
 
 public static class ClaimsPrincipalExtensions
 {
-    private const string SubjectClaim = "sub";
     private const string TenantClaim = "tenant_id";
     private const string ScopeClaim = "scope";
 
@@ -15,7 +15,7 @@ public static class ClaimsPrincipalExtensions
     /// <returns>Return the current user id or null if does not exists.</returns>
     public static string? UserId(this ClaimsPrincipal principal)
     {
-        return principal.Claim(SubjectClaim) ?? principal.Claim(ClaimTypes.NameIdentifier);
+        return principal.Claim(JwtRegisteredClaimNames.Sub) ?? principal.Claim(ClaimTypes.NameIdentifier);
     }
     
     /// <summary>

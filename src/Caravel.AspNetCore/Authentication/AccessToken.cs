@@ -1,10 +1,3 @@
-namespace Caravel.AspNetCore.Authentication
-{
-    public record AccessToken
-    {
-        public string Token { get; }
-        public int ExpiresIn { get; }
+namespace Caravel.AspNetCore.Authentication;
 
-        public AccessToken(string token, int expiresIn) => (Token, ExpiresIn) = (token, expiresIn);
-    }
-}
+public record AccessToken(string Token, int ExpiresIn);

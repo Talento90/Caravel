@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using Caravel.AspNetCore.Security;
 using Caravel.Security;
 
 namespace Caravel.AspNetCore.Middleware;

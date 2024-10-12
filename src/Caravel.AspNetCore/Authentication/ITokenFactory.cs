@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
+namespace Caravel.AspNetCore.Authentication;
 
-namespace Caravel.AspNetCore.Authentication
+public interface ITokenFactory
 {
-    public interface ITokenFactory
-    {
-        Task<string> GenerateToken(int size = 32);
-    }
+    Task<string> GenerateToken(int size = 32);
 }

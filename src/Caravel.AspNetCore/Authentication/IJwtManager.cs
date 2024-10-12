@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Caravel.AspNetCore.Authentication
+namespace Caravel.AspNetCore.Authentication;
+
+public interface IJwtManager
 {
-    public interface IJwtManager
-    {
-        AccessToken GenerateAccessToken(string id, string username, IEnumerable<Claim> claims);
-        ClaimsPrincipal? GetClaims(string token, string signingKey);
-    }
+    AccessToken GenerateAccessToken(string id, string username, IEnumerable<Claim> claims);
+    ClaimsPrincipal? GetClaims(string token, string signingKey);
 }

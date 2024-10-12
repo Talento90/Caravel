@@ -1,18 +1,15 @@
-using System;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
-namespace Caravel.AspNetCore.Authentication
+namespace Caravel.AspNetCore.Authentication;
+
+public sealed class TokenFactory : ITokenFactory
 {
-    public sealed class TokenFactory : ITokenFactory
+    public Task<string> GenerateToken(int size = 32)
     {
-        public Task<string> GenerateToken(int size=32)
-        {
-            var randomNumber = new byte[size];
-            using var rng = RandomNumberGenerator.Create();
-            
-            rng.GetBytes(randomNumber);
-            return Task.FromResult(Convert.ToBase64String(randomNumber));
-        }
+        var randomNumber = new byte[size];
+        using var rng = RandomNumberGenerator.Create();
+
+        rng.GetBytes(randomNumber);
+        return Task.FromResult(Convert.ToBase64String(randomNumber));
     }
 }
