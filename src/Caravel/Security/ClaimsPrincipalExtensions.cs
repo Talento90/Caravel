@@ -13,14 +13,9 @@ public static class ClaimsPrincipalExtensions
     /// </summary>
     /// <param name="principal"></param>
     /// <returns>Return the current user id or null if does not exists.</returns>
-    public static Guid? UserId(this ClaimsPrincipal principal)
+    public static string? UserId(this ClaimsPrincipal principal)
     {
-        var uid = principal.FindFirst(SubjectClaim)?.Value;
-
-        if (Guid.TryParse(uid, out var result))
-            return result;
-
-        return null;
+        return principal.Claim(SubjectClaim);
     }
     
     /// <summary>
@@ -51,13 +46,8 @@ public static class ClaimsPrincipalExtensions
     /// </summary>
     /// <param name="principal"></param>
     /// <returns>Return the current user id or null if does not exists.</returns>
-    public static Guid? TenantId(this ClaimsPrincipal principal)
+    public static string? TenantId(this ClaimsPrincipal principal)
     {
-        var uid = principal.FindFirst(TenantClaim)?.Value;
-
-        if (Guid.TryParse(uid, out var result))
-            return result;
-
-        return null;
+        return principal.Claim(TenantClaim);
     }
 }

@@ -1,8 +1,10 @@
+using Caravel.Functional;
+
 namespace Caravel.Security;
 
 public interface IUserContext
-{   
-    Guid? UserId { get; }
-    Guid? TenantId { get; }
+{
+    Result<string> UserId();
+    Result<string> TenantId();
     bool HasPermission(string permission);
 }

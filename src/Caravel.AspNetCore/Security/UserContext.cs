@@ -1,22 +1,31 @@
+using Caravel.Errors;
+using Caravel.Functional;
 using Caravel.Security;
 
 namespace Caravel.AspNetCore.Security;
 
-public class UserContext : IUserContext
+public class UserContext(IHttpContextAccessor contextAccessor) : IUserContext
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-
-    public UserContext(IHttpContextAccessor contextAccessor)
+    public Result<string> UserId()
     {
-        _contextAccessor = contextAccessor;
+        var userId = contextAccessor.HttpContext?.User.UserId();
+
+        return string.IsNullOrEmpty(userId)
+            ? Error.Unauthorized("unauthorized_user", "User is not authenticated.")
+            : Result<string>.Success(userId);
     }
+    
+    public Result<string> TenantId()
+    {
+        var tenantId = contextAccessor.HttpContext?.User.TenantId();
 
-    public Guid? UserId => _contextAccessor.HttpContext?.User.UserId();
-
-    public Guid? TenantId => _contextAccessor.HttpContext?.User.TenantId();
+        return string.IsNullOrEmpty(tenantId)
+            ? Error.Unauthorized("unauthorized_tenant", "Missing tenant identifier.")
+            : Result<string>.Success(tenantId);
+    }
 
     public bool HasPermission(string permission)
     {
-        return _contextAccessor.HttpContext?.User.HasPermission(permission) ?? false;
+        return contextAccessor.HttpContext?.User.HasPermission(permission) ?? false;
     }
 }

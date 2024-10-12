@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
-    <PackageVersion>0.28.0</PackageVersion>
+    <PackageVersion>0.29.0</PackageVersion>
     <PackageTags>dotnet,sdk</PackageTags>
     <Title>Caravel</Title>
     <Description>Caravel is a package that contains common utilities for building dotnet applications.</Description>

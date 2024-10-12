@@ -7,8 +7,8 @@ namespace Caravel.Entities
         public Ulid Id { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
-        public Guid CreatedBy { get; set; }
-        public Guid? UpdatedBy { get; set; }
+        public Ulid CreatedBy { get; set; }
+        public Ulid? UpdatedBy { get; set; }
 
         public Entity()
         {

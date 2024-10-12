@@ -50,7 +50,7 @@ public static class EntityFrameworkExtensions
 
     public static void AuditEntities(this DbContext dbContext, IUserContext userContext)
     {
-        if (!userContext.UserId.HasValue)
+        if (!userContext.UserId().IsSuccess || !Ulid.TryParse(userContext.UserId().Data, out var userId))
         {
             return;
         }
@@ -70,14 +70,14 @@ public static class EntityFrameworkExtensions
                 case EntityState.Added:
                 {
                     entity.CreatedAt = DateTimeOffset.UtcNow;
-                    entity.CreatedBy = userContext.UserId.Value;
+                    entity.CreatedBy = userId;
                     break;
                 }
                 case EntityState.Modified:
                 case EntityState.Deleted:
                 {
                     entity.UpdatedAt = DateTimeOffset.UtcNow;
-                    entity.UpdatedBy = userContext.UserId;
+                    entity.UpdatedBy = userId;
                     break;
                 }
             }
