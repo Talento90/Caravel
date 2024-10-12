@@ -15,7 +15,7 @@ public static class ClaimsPrincipalExtensions
     /// <returns>Return the current user id or null if does not exists.</returns>
     public static string? UserId(this ClaimsPrincipal principal)
     {
-        return principal.Claim(SubjectClaim);
+        return principal.Claim(SubjectClaim) ?? principal.Claim(ClaimTypes.NameIdentifier);
     }
     
     /// <summary>
