@@ -29,6 +29,6 @@ public sealed class IdempotentPipelineBehaviour <TRequest, TResponse> : IPipelin
 
         await _idempotentService.CreateRequestAsync(request, cancellationToken);
         
-        return await next();
+        return await next(cancellationToken);
     }
 }

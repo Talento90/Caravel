@@ -33,7 +33,7 @@ public sealed class ValidationPipelineBehavior<TRequest, TResponse>(
 
         if (errors.Count == 0)
         {
-            return await next();
+            return await next(cancellationToken);
         }
         
         if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))

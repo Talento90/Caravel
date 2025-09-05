@@ -35,7 +35,7 @@ public sealed class LoggingPipelineBehaviour<TRequest, TResponse>(
             requestName,
             DateTime.UtcNow);
 
-        var response = await next();
+        var response = await next(cancellationToken);
         _timer.Stop();
 
         if (!response.IsSuccess)

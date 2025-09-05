@@ -26,7 +26,7 @@ public class ValidationPipelineBehaviorTests
 
         var result = await behaviour.Handle(
             command,
-            () => Task.FromResult(Result<TestDataResponse>.Success(response)),
+            (_) => Task.FromResult(Result<TestDataResponse>.Success(response)),
             CancellationToken.None
         );
 
@@ -53,7 +53,7 @@ public class ValidationPipelineBehaviorTests
 
         var result = await behaviour.Handle(
             command,
-            () => Task.FromResult(Result.Success()),
+            (_) => Task.FromResult(Result.Success()),
             CancellationToken.None
         );
 
@@ -86,7 +86,7 @@ public class ValidationPipelineBehaviorTests
 
         var result = await behaviour.Handle(
             command,
-            () => Task.FromResult(Result<TestDataResponse>.Success(expectedResponse)),
+            (_) => Task.FromResult(Result<TestDataResponse>.Success(expectedResponse)),
             CancellationToken.None
         );
 
@@ -105,7 +105,7 @@ public class ValidationPipelineBehaviorTests
 
 
         var ex = await Assert.ThrowsAsync<Exceptions.CaravelException>(() =>
-            behaviour.Handle(command, () => Task.FromResult(new TestDataResponse {Data = string.Empty}),
+            behaviour.Handle(command, (_) => Task.FromResult(new TestDataResponse {Data = string.Empty}),
                 CancellationToken.None)
         );
         
